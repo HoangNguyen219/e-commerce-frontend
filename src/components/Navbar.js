@@ -1,7 +1,7 @@
 import React from "react";
 import { FaBars } from "react-icons/fa";
 import styled from "styled-components";
-import CartButton from "./CartButton";
+import CartButtons from "./CartButtons";
 import logo from "../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { links } from "../utils/constants";
@@ -27,7 +27,7 @@ const Navbar = () => {
             );
           })}
         </ul>
-        <CartButton />
+        <CartButtons />
       </div>
     </NavContainer>
   );

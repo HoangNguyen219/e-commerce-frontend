@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { links } from "../utils/constants";
 const Navbar = () => {
   return (
-    <NavContainer>
+    <Wrapper>
       <div className="nav-center">
         <div className="nav-header">
           <Link to="/">
@@ -29,11 +29,11 @@ const Navbar = () => {
         </ul>
         <CartButtons />
       </div>
-    </NavContainer>
+    </Wrapper>
   );
 };
 
-const NavContainer = styled.nav`
+const Wrapper = styled.nav`
   height: 5rem;
   display: flex;
   align-items: center;

@@ -1,5 +1,5 @@
 import React from "react";
-import PageHero from "../components/PageHero";
+import { PageHero } from "../components";
 import styled from "styled-components";
 import aboutImage from "../assets/hero-bcg.jpeg";
 
@@ -8,18 +8,20 @@ const AboutPage = () => {
     <main>
       <PageHero title="about" />;
       <Wrapper className="page section section-center">
-        <img src={aboutImage} alt="About image" />
+        <img src={aboutImage} alt="Nice Table" />
         <article>
           <div className="title">
             <h2>our story</h2>
             <div className="underline"></div>
           </div>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-            distinctio sequi natus, nostrum, recusandae minus odio facere
-            exercitationem, assumenda magni voluptate. Corporis vitae quia
-            deserunt quae doloribus, consequuntur officiis sint neque ullam
-            mollitia voluptatum aut unde quis rem a quasi?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa
+            repellendus tempore corporis iste odio eius nihil modi quidem natus
+            et? Omnis dolorem consectetur, incidunt aut, dolorum reprehenderit
+            molestiae optio totam magnam officiis placeat nam harum, dolor eaque
+            beatae quas consequatur? Deleniti vero ratione incidunt pariatur
+            atque quasi accusantium iusto! Quaerat excepturi tempore ad debitis
+            aperiam. Reiciendis delectus esse ut provident.
           </p>
         </article>
       </Wrapper>

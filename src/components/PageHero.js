@@ -29,9 +29,6 @@ const Wrapper = styled.section`
   a:hover {
     color: var(--clr-primary-1);
   }
-  h3 {
-    text-transform: capitalize;
-  }
 `;
 
 export default PageHero;

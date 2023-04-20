@@ -8,15 +8,16 @@ import CartButtons from "./CartButtons";
 import { useProductContext } from "../context/products_context";
 
 const SideBar = () => {
-  const data = useProductContext();
-  console.log(data);
+  const { isSidebarOpen, closeSidebar } = useProductContext();
   const isOpen = true;
   return (
     <Wrapper>
-      <aside className={`${isOpen ? "sidebar show-sidebar" : "sidebar"}`}>
+      <aside
+        className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
+      >
         <div className="sidebar-header">
           <img src={logo} alt="NTH Store" className="logo" />
-          <button className="close-btn" type="button">
+          <button className="close-btn" type="button" onClick={closeSidebar}>
             <FaTimes />
           </button>
         </div>
@@ -24,12 +25,16 @@ const SideBar = () => {
           {links.map(({ id, text, url }) => {
             return (
               <li key={id}>
-                <Link to={url}>{text}</Link>
+                <Link to={url} onClick={closeSidebar}>
+                  {text}
+                </Link>
               </li>
             );
           })}
           <li>
-            <Link to="/checkout">checkout</Link>
+            <Link to="/checkout" onClick={closeSidebar}>
+              checkout
+            </Link>
           </li>
         </ul>
         <CartButtons />

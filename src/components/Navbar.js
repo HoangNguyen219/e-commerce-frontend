@@ -5,7 +5,9 @@ import CartButtons from "./CartButtons";
 import logo from "../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { links } from "../utils/constants";
+import { useProductContext } from "../context/products_context";
 const Navbar = () => {
+  const { openSidebar } = useProductContext();
   return (
     <Wrapper>
       <div className="nav-center">
@@ -13,7 +15,7 @@ const Navbar = () => {
           <Link to="/">
             <img src={logo} alt="NTH Store" />
           </Link>
-          <button type="button" className="nav-toggle">
+          <button type="button" className="nav-toggle" onClick={openSidebar}>
             <FaBars />
           </button>
         </div>

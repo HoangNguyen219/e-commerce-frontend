@@ -1,13 +1,13 @@
-import React from "react";
-import { FaBars } from "react-icons/fa";
-import styled from "styled-components";
-import CartButtons from "./CartButtons";
-import logo from "../assets/logo.svg";
-import { Link } from "react-router-dom";
-import { links } from "../utils/constants";
-import { useProductContext } from "../context/products_context";
+import React from 'react';
+import { FaBars } from 'react-icons/fa';
+import styled from 'styled-components';
+import CartButtons from './CartButtons';
+import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
+import { links } from '../utils/constants';
+import { useProductsContext } from '../context/products_context';
 const Navbar = () => {
-  const { openSidebar } = useProductContext();
+  const { openSidebar } = useProductsContext();
   return (
     <Wrapper>
       <div className="nav-center">

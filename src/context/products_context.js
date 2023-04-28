@@ -36,6 +36,7 @@ export const ProductsProvider = ({ children }) => {
     try {
       const response = await axios.get(url);
       const products = response.data.products;
+      console.log(products);
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR });
@@ -53,6 +54,6 @@ export const ProductsProvider = ({ children }) => {
   );
 };
 
-export const useProductContext = () => {
+export const useProductsContext = () => {
   return useContext(ProductsContext);
 };

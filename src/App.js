@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar, SideBar, Footer } from "./components";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navbar, SideBar, Footer } from './components';
 import {
   HomePage,
   AboutPage,
@@ -9,7 +9,7 @@ import {
   ProductsPage,
   SingleProductPage,
   CartPage,
-} from "./pages";
+} from './pages';
 function App() {
   return (
     <Router>

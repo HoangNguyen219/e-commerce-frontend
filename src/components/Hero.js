@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import heroImage from "../assets/hero-bcg.jpeg";
-import heroImage2 from "../assets/hero-bcg-2.jpeg";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import heroImage from '../assets/hero-bcg.jpeg';
+import heroImage2 from '../assets/hero-bcg-2.jpeg';
 
 const Hero = () => {
   return (
@@ -80,7 +80,7 @@ const Wrapper = styled.section`
       border-radius: var(--radius);
     }
     .img-container::before {
-      content: "";
+      content: '';
       position: absolute;
       width: 10%;
       height: 80%;

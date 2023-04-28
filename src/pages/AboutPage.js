@@ -1,7 +1,7 @@
-import React from "react";
-import { PageHero } from "../components";
-import styled from "styled-components";
-import aboutImage from "../assets/hero-bcg.jpeg";
+import React from 'react';
+import { PageHero } from '../components';
+import styled from 'styled-components';
+import aboutImage from '../assets/hero-bcg.jpeg';
 
 const AboutPage = () => {
   return (

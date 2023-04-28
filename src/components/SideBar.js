@@ -1,19 +1,19 @@
-import React from "react";
-import logo from "../assets/logo.svg";
-import { Link } from "react-router-dom";
-import { FaTimes } from "react-icons/fa";
-import { links } from "../utils/constants";
-import styled from "styled-components";
-import CartButtons from "./CartButtons";
-import { useProductContext } from "../context/products_context";
+import React from 'react';
+import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { links } from '../utils/constants';
+import styled from 'styled-components';
+import CartButtons from './CartButtons';
+import { useProductsContext } from '../context/products_context';
 
 const SideBar = () => {
-  const { isSidebarOpen, closeSidebar } = useProductContext();
+  const { isSidebarOpen, closeSidebar } = useProductsContext();
   const isOpen = true;
   return (
     <Wrapper>
       <aside
-        className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
+        className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}
       >
         <div className="sidebar-header">
           <img src={logo} alt="NTH Store" className="logo" />

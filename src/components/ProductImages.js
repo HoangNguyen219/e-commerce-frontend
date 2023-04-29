@@ -13,7 +13,7 @@ const ProductImages = ({ images }) => {
               alt="secondary image"
               key={index}
               onClick={() => setMain(images[index])}
-              className={image === main && 'active'}
+              className={`${image === main ? 'active' : null}`}
             />
           );
         })}

@@ -6,7 +6,7 @@ const GridView = ({ products }) => {
   return (
     <Wrapper>
       <div className="product-container">
-        {products.map((product, index) => {
+        {products.map((product) => {
           return <Product key={product.id} {...product} />;
         })}
       </div>

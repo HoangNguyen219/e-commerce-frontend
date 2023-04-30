@@ -1,4 +1,9 @@
-import { LOAD_PRODUCTS, SET_GRIDVIEW, SET_LISTVIEW } from '../actions';
+import {
+  LOAD_PRODUCTS,
+  SET_GRIDVIEW,
+  SET_LISTVIEW,
+  UPDATE_SORT,
+} from '../actions';
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
@@ -18,6 +23,12 @@ const filter_reducer = (state, action) => {
     return {
       ...state,
       grid_view: false,
+    };
+  }
+  if (action.type === UPDATE_SORT) {
+    return {
+      ...state,
+      sort: action.payload,
     };
   }
   throw new Error(`No matching "${action.type}" - action type`);

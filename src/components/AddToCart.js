@@ -39,9 +39,7 @@ const AddToCart = ({ product }) => {
               <button
                 key={index}
                 style={{ background: color }}
-                className={`${
-                  mainColor === color ? 'color-btn active' : 'color-btn'
-                }`}
+                className="color-btn"
                 onClick={() => setMainColor(color)}
               >
                 {mainColor === color ? <FaCheck /> : null}
@@ -92,7 +90,6 @@ const Wrapper = styled.section`
     margin-right: 0.5rem;
     border: none;
     cursor: pointer;
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,9 +97,6 @@ const Wrapper = styled.section`
       font-size: 0.75rem;
       color: var(--clr-white);
     }
-  }
-  .active {
-    opacity: 1;
   }
   .btn-container {
     margin-top: 2rem;

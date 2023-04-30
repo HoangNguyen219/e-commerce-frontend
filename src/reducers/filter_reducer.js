@@ -1,8 +1,10 @@
 import {
+  FILTER_PRODUCTS,
   LOAD_PRODUCTS,
   SET_GRIDVIEW,
   SET_LISTVIEW,
   SORT_PRODUCTS,
+  UPDATE_FILTERS,
   UPDATE_SORT,
 } from '../actions';
 
@@ -66,6 +68,13 @@ const filter_reducer = (state, action) => {
       ...state,
       filtered_products: tempProducts,
     };
+  }
+  if (action.type === UPDATE_FILTERS) {
+    const { name, value } = action.payload;
+    return { ...state, filters: { ...state.filters, [name]: value } };
+  }
+  if (action.type === FILTER_PRODUCTS) {
+    return { ...state };
   }
   throw new Error(`No matching "${action.type}" - action type`);
 };

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useReducer } from 'react';
 import reducer from '../reducers/filter_reducer';
 import { useProductsContext } from './products_context';
 import {
+  CLEAR_FILTERS,
   FILTER_PRODUCTS,
   LOAD_PRODUCTS,
   SET_GRIDVIEW,
@@ -74,10 +75,15 @@ export const FilterProvider = ({ children }) => {
     if (name === 'price') {
       value = Number(value);
     }
+    if (name === 'shipping') {
+      value = e.target.checked;
+    }
     dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
   };
 
-  const clearFilters = () => {};
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
 
   return (
     <FilterContext.Provider

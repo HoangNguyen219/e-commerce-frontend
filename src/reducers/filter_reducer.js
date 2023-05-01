@@ -1,4 +1,5 @@
 import {
+  CLEAR_FILTERS,
   FILTER_PRODUCTS,
   LOAD_PRODUCTS,
   SET_GRIDVIEW,
@@ -78,6 +79,20 @@ const filter_reducer = (state, action) => {
   }
   if (action.type === FILTER_PRODUCTS) {
     return { ...state };
+  }
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: '',
+        company: 'All',
+        category: 'All',
+        color: 'All',
+        price: state.filters.max_price,
+        shipping: false,
+      },
+    };
   }
   throw new Error(`No matching "${action.type}" - action type`);
 };

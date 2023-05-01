@@ -17,8 +17,8 @@ const filter_reducer = (state, action) => {
       ...state,
       all_products: payload.products,
       filtered_products: [...payload.products],
-      companies: [{ name: 'all', id: '0' }, ...payload.companies],
-      categories: [{ name: 'all', id: '0' }, ...payload.categories],
+      companies: [{ name: 'All', id: '0' }, ...payload.companies],
+      categories: [{ name: 'All', id: '0' }, ...payload.categories],
       filters: {
         ...state.filters,
         max_price: maxPrice,

@@ -20,9 +20,9 @@ const initialState = {
   sort: 'price-lowest',
   filters: {
     text: '',
-    company: 'all',
-    category: 'all',
-    color: 'all',
+    company: 'All',
+    category: 'All',
+    color: 'All',
     min_price: 0,
     max_price: 0,
     price: 0,

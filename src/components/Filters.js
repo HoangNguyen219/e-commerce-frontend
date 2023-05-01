@@ -47,7 +47,11 @@ const Filters = () => {
                     onClick={updateFilters}
                     name="category"
                     type="button"
-                    className={`${category === cate.name ? 'active' : null}`}
+                    className={`${
+                      category.toLowerCase() === cate.name.toLowerCase()
+                        ? 'active'
+                        : null
+                    }`}
                   >
                     {cate.name}
                   </button>
@@ -56,6 +60,25 @@ const Filters = () => {
             </div>
           </div>
           {/* end of categories */}
+          {/* companies */}
+          <div className="form-control">
+            <h5>company</h5>
+            <select
+              name="company"
+              className="company"
+              value={company}
+              onChange={updateFilters}
+            >
+              {companies.map((comp) => {
+                return (
+                  <option key={comp.id} value={comp.name}>
+                    {comp.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* end of companies */}
         </form>
       </div>
     </Wrapper>
@@ -99,6 +122,7 @@ const Wrapper = styled.section`
     border-radius: var(--radius);
     border-color: transparent;
     padding: 0.25rem;
+    text-transform: capitalize;
   }
   .colors {
     display: flex;

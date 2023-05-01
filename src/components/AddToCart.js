@@ -35,11 +35,16 @@ const AddToCart = ({ product }) => {
         <span>colors :</span>
         <div>
           {colors.map((color, index) => {
+            let displayColor = color;
+            if (color == 'white') {
+              displayColor = '#eeedec';
+            }
             return (
               <button
                 key={index}
-                style={{ background: color }}
+                style={{ background: displayColor }}
                 className="color-btn"
+                data-title={color}
                 onClick={() => setMainColor(color)}
               >
                 {mainColor === color ? <FaCheck /> : null}
@@ -83,6 +88,7 @@ const Wrapper = styled.section`
   }
   .color-btn {
     display: inline-block;
+    position: relative;
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
@@ -96,6 +102,20 @@ const Wrapper = styled.section`
     svg {
       font-size: 0.75rem;
       color: var(--clr-white);
+    }
+    :hover::before {
+      content: attr(data-title);
+      position: absolute;
+      top: -26px;
+      display: inline-block;
+      padding: 3px 6px;
+      border-radius: 2px;
+      background: #444857;
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      text-transform: capitalize;
+      font-weight: normal !important;
     }
   }
   .btn-container {

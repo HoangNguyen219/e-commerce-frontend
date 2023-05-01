@@ -14,6 +14,8 @@ import {
 const initialState = {
   filtered_products: [],
   all_products: [],
+  categories: [],
+  companies: [],
   grid_view: true,
   sort: 'price-lowest',
   filters: {
@@ -31,11 +33,14 @@ const initialState = {
 const FilterContext = React.createContext();
 
 export const FilterProvider = ({ children }) => {
-  const { products } = useProductsContext();
+  const { products, companies, categories } = useProductsContext();
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     if (products) {
-      dispatch({ type: LOAD_PRODUCTS, payload: products });
+      dispatch({
+        type: LOAD_PRODUCTS,
+        payload: { products, companies, categories },
+      });
     }
   }, [products]);
 
@@ -60,6 +65,9 @@ export const FilterProvider = ({ children }) => {
   const updateFilters = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    if (name === 'category') {
+      value = e.target.textContent;
+    }
     dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
   };
 

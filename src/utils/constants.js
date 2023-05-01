@@ -39,7 +39,30 @@ export const services = [
   },
 ];
 
+export const colors = [
+  'black',
+  'white',
+  'gray',
+  'silver',
+  'brown',
+  'maroon',
+  'red',
+  'purple',
+  'fuchsia',
+  'green',
+  'lime',
+  'olive',
+  'yellow',
+  'navy',
+  'blue',
+  'teal',
+  'aqua',
+];
+
 export const products_url = '/api/v1/products';
+export const categories_url = '/api/v1/categories';
+export const companies_url = '/api/v1/companies';
+
 // export const products_url = 'https://course-api.com/react-store-products'
 
 // export const single_product_url = `https://course-api.com/react-store-single-product?id=`

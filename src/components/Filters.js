@@ -16,7 +16,10 @@ const Filters = () => {
     updateFilters,
     clearFilters,
     all_products,
+    categories,
+    companies,
   } = useFilterContext();
+
   return (
     <Wrapper>
       <div className="content">
@@ -33,6 +36,26 @@ const Filters = () => {
             />
           </div>
           {/* end search input */}
+          {/* categories */}
+          <div className="form-control">
+            <h5>category</h5>
+            <div>
+              {categories.map((cate) => {
+                return (
+                  <button
+                    key={cate.id}
+                    onClick={updateFilters}
+                    name="category"
+                    type="button"
+                    className={`${category === cate.name ? 'active' : null}`}
+                  >
+                    {cate.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* end of categories */}
         </form>
       </div>
     </Wrapper>

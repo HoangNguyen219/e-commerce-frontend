@@ -12,18 +12,24 @@ import {
 import reducer from '../reducers/products_reducer';
 import React from 'react';
 import axios from 'axios';
-import { products_url } from '../utils/constants';
+import {
+  categories_url,
+  companies_url,
+  products_url,
+} from '../utils/constants';
 
 const ProductsContext = React.createContext();
 const initialState = {
   isSidebarOpen: false,
   product_loading: false,
   products_error: false,
-  product: [],
+  products: [],
   featured_products: [],
   single_product_loading: false,
   single_product_error: false,
   single_product: {},
+  categories: [],
+  companies: [],
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -37,12 +43,22 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSE });
   };
 
-  const fetchProducts = async (url) => {
+  const fetchData = async () => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
     try {
-      const response = await axios.get(url);
-      const products = response.data.products;
-      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
+      const [productsResponse, categoriesResponse, companiesResponse] =
+        await Promise.all([
+          axios.get(products_url),
+          axios.get(categories_url),
+          axios.get(companies_url),
+        ]);
+      const products = productsResponse.data.products;
+      const categories = categoriesResponse.data.categories;
+      const companies = companiesResponse.data.companies;
+      dispatch({
+        type: GET_PRODUCTS_SUCCESS,
+        payload: { products, categories, companies },
+      });
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR });
     }
@@ -60,7 +76,7 @@ export const ProductsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchProducts(products_url);
+    fetchData();
   }, []);
 
   return (

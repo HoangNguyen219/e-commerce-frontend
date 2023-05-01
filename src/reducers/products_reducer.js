@@ -22,14 +22,17 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === GET_PRODUCTS_SUCCESS) {
-    const featured_products = action.payload.filter(
+    const payload = action.payload;
+    const featured_products = payload.products.filter(
       (product) => product.featured === true
     );
     return {
       ...state,
       products_loading: false,
-      products: action.payload,
+      products: payload.products,
       featured_products,
+      companies: payload.companies,
+      categories: payload.categories,
     };
   }
 

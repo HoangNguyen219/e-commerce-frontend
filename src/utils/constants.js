@@ -43,20 +43,14 @@ export const colors = [
   'black',
   'white',
   'gray',
-  'silver',
   'brown',
-  'maroon',
   'red',
   'purple',
-  'fuchsia',
   'green',
-  'lime',
   'olive',
   'yellow',
   'navy',
   'blue',
-  'teal',
-  'aqua',
 ];
 
 export const products_url = '/api/v1/products';

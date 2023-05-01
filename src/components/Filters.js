@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filter_context';
+import { colors } from '../utils/constants';
+import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
   const {
@@ -79,6 +81,43 @@ const Filters = () => {
             </select>
           </div>
           {/* end of companies */}
+          {/* colors */}
+          <div className="form-control">
+            <h5>colors</h5>
+            <div className="colors">
+              <button
+                name="color"
+                className={`${
+                  color.toLowerCase() === 'all' ? 'all-btn active' : 'all-btn'
+                }`}
+                data-title="All"
+                onClick={updateFilters}
+              >
+                All
+              </button>
+              {colors.map((c, index) => {
+                let displayColor = c;
+                if (c == 'white') {
+                  displayColor = '#eeedec';
+                }
+                return (
+                  <button
+                    key={index}
+                    name="color"
+                    style={{ background: displayColor }}
+                    className={`${
+                      color === c ? 'color-btn active' : 'color-btn'
+                    }`}
+                    data-title={c}
+                    onClick={updateFilters}
+                  >
+                    {color === c ? <FaCheck /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* end of colors */}
         </form>
       </div>
     </Wrapper>
@@ -125,10 +164,12 @@ const Wrapper = styled.section`
     text-transform: capitalize;
   }
   .colors {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    width: fit-content;
   }
   .color-btn {
+    position: relative;
     display: inline-block;
     width: 1rem;
     height: 1rem;
@@ -137,7 +178,6 @@ const Wrapper = styled.section`
     margin-right: 0.5rem;
     border: none;
     cursor: pointer;
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,17 +185,30 @@ const Wrapper = styled.section`
       font-size: 0.5rem;
       color: var(--clr-white);
     }
+    :hover::before {
+      content: attr(data-title);
+      position: absolute;
+      top: -26px;
+      display: inline-block;
+      padding: 3px 6px;
+      border-radius: 2px;
+      background: #444857;
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      text-transform: capitalize;
+      font-weight: normal !important;
+    }
   }
   .all-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 0.5rem;
-    opacity: 0.5;
+    bottom: 5px;
+    position: relative;
   }
-  .active {
-    opacity: 1;
-  }
+
   .all-btn .active {
     text-decoration: underline;
   }

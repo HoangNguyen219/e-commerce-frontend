@@ -44,7 +44,7 @@ const SingleProductPage = () => {
     name,
     price,
     description,
-    stock,
+    colorStocks,
     averageRating: stars,
     numOfReviews,
     id: sku,
@@ -57,6 +57,11 @@ const SingleProductPage = () => {
   const images = secondaryImages
     ? [primaryImage, ...secondaryImages]
     : [primaryImage];
+  const stock = colorStocks
+    ? colorStocks.reduce((prev, cur) => {
+        return prev + cur.stock;
+      }, 0)
+    : 0;
   return (
     <Wrapper>
       <PageHero title={name} product />

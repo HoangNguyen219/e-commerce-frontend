@@ -7,9 +7,10 @@ import AmountButtons from './AmountButtons';
 const AddToCart = ({ product }) => {
   // add to cart
   const { addToCart } = useCartContext();
-  const { id, stock, colors } = product;
-  const [mainColor, setMainColor] = useState(colors[0]);
+  const { id, colorStocks } = product;
+  const [mainColor, setMainColor] = useState(colorStocks[0].color);
   const [amount, setAmount] = useState(1);
+  const [stock, setStock] = useState(colorStocks[0].stock);
 
   const increase = () => {
     setAmount((oldAmount) => {
@@ -34,18 +35,25 @@ const AddToCart = ({ product }) => {
       <div className="colors">
         <span>colors :</span>
         <div>
-          {colors.map((color, index) => {
+          {colorStocks.map((colorStock, index) => {
+            const color = colorStock.color;
+            const stock = colorStock.stock;
             let displayColor = color;
-            if (color == 'white') {
+            if (color === 'white') {
               displayColor = '#eeedec';
             }
             return (
               <button
                 key={index}
                 style={{ background: displayColor }}
-                className="color-btn"
-                data-title={color}
-                onClick={() => setMainColor(color)}
+                className={`${stock ? 'color-btn' : 'color-btn disabled'}`}
+                data-title={`${stock ? color : color + ': Out of stock'}`}
+                onClick={() => {
+                  setMainColor(color);
+                  setStock(stock);
+                  setAmount(1);
+                }}
+                disabled={stock ? null : true}
               >
                 {mainColor === color ? <FaCheck /> : null}
               </button>
@@ -53,6 +61,10 @@ const AddToCart = ({ product }) => {
           })}
         </div>
       </div>
+      <p className="info">
+        <span>Stock :</span>
+        {stock}
+      </p>
       <div className="btn-container">
         <AmountButtons
           increase={increase}
@@ -117,6 +129,10 @@ const Wrapper = styled.section`
       text-transform: capitalize;
       font-weight: normal !important;
     }
+  }
+
+  .disabled {
+    cursor: not-allowed;
   }
   .btn-container {
     margin-top: 2rem;

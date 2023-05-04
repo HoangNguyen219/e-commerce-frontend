@@ -1,6 +1,7 @@
 import {
   ADD_TO_CART,
   CLEAR_CART,
+  COUNT_CART_TOTALS,
   REMOVE_CART_ITEM,
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
@@ -57,6 +58,22 @@ const cart_reducer = (state, action) => {
       }
     });
     return { ...state, cart: tempCart };
+  }
+
+  if (action.type === COUNT_CART_TOTALS) {
+    const { total_items, total } = state.cart.reduce(
+      (prev, cur) => {
+        const { amount, price } = cur;
+        prev.total_items += amount;
+        prev.total += price * amount;
+        return prev;
+      },
+      {
+        total_items: 0,
+        total: 0,
+      }
+    );
+    return { ...state, total_items, total };
   }
   throw new Error(`No matching "${action.type}" - action type`);
 };

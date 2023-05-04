@@ -31,10 +31,10 @@ Variables
   --clr-grey-9: hsl(212, 33%, 89%);
   --clr-grey-10: hsl(210, 36%, 96%);
   --clr-white: #fff;
-  --clr-red-dark: hsl(360, 67%, 44%);
-  --clr-red-light: hsl(360, 71%, 66%);
-  --clr-green-dark: hsl(125, 67%, 44%);
-  --clr-green-light: hsl(125, 71%, 66%);
+  --clr-red-dark: #842029;
+  --clr-red-light: #f8d7da;
+  --clr-green-dark: #0f5132;
+  --clr-green-light:#d1e7dd;
   --clr-black: #222;
   --transition: all 0.3s linear;
   --spacing: 0.1rem;

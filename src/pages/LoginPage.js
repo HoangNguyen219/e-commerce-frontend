@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { PageHero } from '../components';
-import { FormRow } from '../components';
+import { PageHero, FormRow, Alert } from '../components';
 
 const initialState = {
   name: '',
   email: '',
   password: '',
   confirmPassword: '',
+  isMember: true,
+  showAlert: true,
 };
 
 const LoginPage = () => {
   const [values, setValues] = useState(initialState);
+
+  const toggleMember = () => {
+    setValues({ ...values, isMember: !values.isMember });
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -21,16 +26,20 @@ const LoginPage = () => {
 
   return (
     <main>
-      <PageHero title="register" />;
+      <PageHero title={values.isMember ? 'login' : 'register'} />;
       <Wrapper className="page section section-center">
         <form className="form" onSubmit={onSubmit}>
+          {values.showAlert && <Alert />}
           {/* name input */}
-          <FormRow
-            type="text"
-            name="name"
-            value={values.name}
-            handleChange={handleChange}
-          />
+          {values.isMember || (
+            <FormRow
+              type="text"
+              name="name"
+              value={values.name}
+              handleChange={handleChange}
+            />
+          )}
+
           {/* email input */}
           <FormRow
             type="email"
@@ -46,16 +55,25 @@ const LoginPage = () => {
             handleChange={handleChange}
           />
           {/* confirmPassword input */}
-          <FormRow
-            type="password"
-            name="confirmPassword"
-            labelText="confirm password"
-            value={values.confirmPassword}
-            handleChange={handleChange}
-          />
+          {values.isMember || (
+            <FormRow
+              type="password"
+              name="confirmPassword"
+              labelText="confirm password"
+              value={values.confirmPassword}
+              handleChange={handleChange}
+            />
+          )}
+
           <button type="submit" className="btn btn-block">
             submit
           </button>
+          <p>
+            {values.isMember ? 'Not a member yet? ' : 'Already a member? '}
+            <button type="button" onClick={toggleMember} className="member-btn">
+              {values.isMember ? 'Register' : 'Login'}
+            </button>
+          </p>
         </form>
       </Wrapper>
     </main>
@@ -81,9 +99,9 @@ const Wrapper = styled.section`
   .member-btn {
     background: transparent;
     border: transparent;
-    color: var(--primary-500);
+    color: var(--clr-primary-5);
     cursor: pointer;
-    letter-spacing: var(--letterSpacing);
+    letter-spacing: var(--spacing);
   }
 `;
 

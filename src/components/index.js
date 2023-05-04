@@ -15,6 +15,8 @@ import Filters from './Filters';
 import Sort from './Sort';
 import ProductList from './ProductList';
 import CartContent from './CartContent';
+import FormRow from './FormRow';
+import Alert from './Alert';
 
 export {
   Navbar,
@@ -34,4 +36,6 @@ export {
   Filters,
   ProductList,
   CartContent,
+  FormRow,
+  Alert,
 };

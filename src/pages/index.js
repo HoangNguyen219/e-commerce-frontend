@@ -6,6 +6,8 @@ import PrivateRoute from './PrivateRoute';
 import ProductsPage from './ProductsPage';
 import SingleProductPage from './SingleProductPage';
 import CartPage from './CartPage';
+import AuthWrapper from './AuthWrapper';
+import LoginPage from './LoginPage';
 
 export {
   HomePage,
@@ -16,4 +18,6 @@ export {
   ProductsPage,
   SingleProductPage,
   CartPage,
+  AuthWrapper,
+  LoginPage,
 };

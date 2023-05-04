@@ -102,8 +102,8 @@ const filter_reducer = (state, action) => {
 
     if (color.toLowerCase() !== 'all') {
       tempProducts = tempProducts.filter((product) => {
-        return product.colors.find(
-          (c) => c.toLowerCase() === color.toLowerCase()
+        return product.colorStocks.find(
+          (c) => c.color.toLowerCase() === color.toLowerCase()
         );
       });
     }

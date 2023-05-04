@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
 import { useCartContext } from '../context/cart_context';
 import AmountButtons from './AmountButtons';
+import { WHITE, WHITE_DISPLAY } from '../utils/constants';
 const AddToCart = ({ product }) => {
   // add to cart
   const { addToCart } = useCartContext();
@@ -38,10 +39,7 @@ const AddToCart = ({ product }) => {
           {colorStocks.map((colorStock, index) => {
             const color = colorStock.color;
             const stock = colorStock.stock;
-            let displayColor = color;
-            if (color === 'white') {
-              displayColor = '#eeedec';
-            }
+            const displayColor = color === WHITE ? WHITE_DISPLAY : color;
             return (
               <button
                 key={index}

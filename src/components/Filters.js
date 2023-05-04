@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filter_context';
-import { colors } from '../utils/constants';
+import { WHITE, WHITE_DISPLAY, colors } from '../utils/constants';
 import { FaCheck } from 'react-icons/fa';
 import { formatPrice } from '../utils/helpers';
 
@@ -97,10 +97,8 @@ const Filters = () => {
                 All
               </button>
               {colors.map((c, index) => {
-                let displayColor = c;
-                if (c == 'white') {
-                  displayColor = '#eeedec';
-                }
+                const displayColor = c === WHITE ? WHITE_DISPLAY : c;
+
                 return (
                   <button
                     key={index}

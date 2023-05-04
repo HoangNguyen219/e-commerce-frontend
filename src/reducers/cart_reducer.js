@@ -1,4 +1,10 @@
-import { ADD_TO_CART } from '../actions';
+import {
+  ADD_TO_CART,
+  CLEAR_CART,
+  REMOVE_CART_ITEM,
+  TOGGLE_CART_ITEM_AMOUNT,
+} from '../actions';
+import { DECREASE, INCREASE } from '../utils/constants';
 
 const cart_reducer = (state, action) => {
   if (action.type === ADD_TO_CART) {
@@ -25,6 +31,32 @@ const cart_reducer = (state, action) => {
       };
       return { ...state, cart: [...state.cart, newItem] };
     }
+  }
+  if (action.type === REMOVE_CART_ITEM) {
+    const tempCart = state.cart.filter((item) => item.id !== action.payload);
+    return { ...state, cart: tempCart };
+  }
+  if (action.type === CLEAR_CART) {
+    return { ...state, cart: [] };
+  }
+  if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
+    const { id, value } = action.payload;
+    const tempCart = state.cart.map((item) => {
+      if (item.id === id) {
+        if (value === INCREASE) {
+          let newAmount =
+            item.amount + 1 > item.max ? item.max : item.amount + 1;
+          return { ...item, amount: newAmount };
+        }
+        if (value === DECREASE) {
+          let newAmount = item.amount - 1 < 1 ? 1 : item.amount - 1;
+          return { ...item, amount: newAmount };
+        }
+      } else {
+        return item;
+      }
+    });
+    return { ...state, cart: tempCart };
   }
   throw new Error(`No matching "${action.type}" - action type`);
 };

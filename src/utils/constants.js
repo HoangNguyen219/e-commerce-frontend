@@ -53,6 +53,12 @@ export const colors = [
   'blue',
 ];
 
+export const WHITE_DISPLAY = '#eeedec';
+export const WHITE = 'white';
+
+export const INCREASE = 'increase';
+export const DECREASE = 'decrease';
+
 export const products_url = '/api/v1/products';
 export const categories_url = '/api/v1/categories';
 export const companies_url = '/api/v1/companies';

@@ -18,7 +18,6 @@ const Filters = () => {
     },
     updateFilters,
     clearFilters,
-    all_products,
     categories,
     companies,
   } = useFilterContext();

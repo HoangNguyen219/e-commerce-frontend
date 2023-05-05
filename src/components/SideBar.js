@@ -6,10 +6,11 @@ import { links } from '../utils/constants';
 import styled from 'styled-components';
 import CartButtons from './CartButtons';
 import { useProductsContext } from '../context/products_context';
+import { useUserContext } from '../context/user_context';
 
 const SideBar = () => {
   const { isSidebarOpen, closeSidebar } = useProductsContext();
-  const isOpen = true;
+  const { user } = useUserContext();
   return (
     <Wrapper>
       <aside
@@ -31,11 +32,13 @@ const SideBar = () => {
               </li>
             );
           })}
-          <li>
-            <Link to="/checkout" onClick={closeSidebar}>
-              checkout
-            </Link>
-          </li>
+          {user && (
+            <li>
+              <Link to="/checkout" onClick={closeSidebar}>
+                checkout
+              </Link>
+            </li>
+          )}
         </ul>
         <CartButtons />
       </aside>

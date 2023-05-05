@@ -6,8 +6,10 @@ import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import { links } from '../utils/constants';
 import { useProductsContext } from '../context/products_context';
+import { useUserContext } from '../context/user_context';
 const Navbar = () => {
   const { openSidebar } = useProductsContext();
+  const { user } = useUserContext();
   return (
     <Wrapper>
       <div className="nav-center">
@@ -28,6 +30,11 @@ const Navbar = () => {
               </li>
             );
           })}
+          {user && (
+            <li>
+              <Link to="/checkout">checkout</Link>
+            </li>
+          )}
         </ul>
         <CartButtons />
       </div>

@@ -4,11 +4,13 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
+  LOGOUT_USER,
   REGISTER_USER_BEGIN,
   REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
   TOGGLE_MEMBER,
 } from '../actions';
+import { initialState } from '../context/user_context';
 import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 
 const user_reducer = (state, action) => {
@@ -82,6 +84,13 @@ const user_reducer = (state, action) => {
       showAlert: true,
       alertType: ALERT_DANGER,
       alertText: action.payload,
+    };
+  }
+
+  if (action.type === LOGOUT_USER) {
+    return {
+      ...initialState,
+      user: null,
     };
   }
 

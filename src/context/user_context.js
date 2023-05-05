@@ -6,6 +6,7 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
+  LOGOUT_USER,
   REGISTER_USER_BEGIN,
   REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
@@ -17,7 +18,7 @@ import { auth_url } from '../utils/constants';
 
 const user = localStorage.getItem('user');
 
-const initialState = {
+export const initialState = {
   isMember: true,
   userLoading: true,
   isLoading: false,
@@ -80,13 +81,28 @@ export const UserProvider = ({ children }) => {
     clearAlert();
   };
 
+  const logoutUser = async () => {
+    dispatch({ type: LOGOUT_USER });
+    try {
+      await axios.get(`${auth_url}/logout`);
+    } catch (error) {}
+    removeUserFromLocalStorage();
+  };
+
   const toggleMember = () => {
     dispatch({ type: TOGGLE_MEMBER });
   };
 
   return (
     <UserContext.Provider
-      value={{ ...state, displayAlert, registerUser, toggleMember, loginUser }}
+      value={{
+        ...state,
+        displayAlert,
+        registerUser,
+        toggleMember,
+        loginUser,
+        logoutUser,
+      }}
     >
       {children}
     </UserContext.Provider>

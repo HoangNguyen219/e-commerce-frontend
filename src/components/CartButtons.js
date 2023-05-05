@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useProductsContext } from '../context/products_context';
 import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
 
 function CartButtons() {
+  const { user, logoutUser } = useUserContext();
   const { closeSidebar } = useProductsContext();
   const { total_items } = useCartContext();
   return (
@@ -17,9 +19,21 @@ function CartButtons() {
           <span className="cart-value">{total_items}</span>
         </span>
       </Link>
-      <Link to="/login" className="auth-btn" onClick={closeSidebar}>
-        Login <FaUserPlus />
-      </Link>
+      {user ? (
+        <Link
+          className="auth-btn"
+          onClick={() => {
+            closeSidebar();
+            logoutUser();
+          }}
+        >
+          Logout <FaUserMinus />
+        </Link>
+      ) : (
+        <Link to="/login" className="auth-btn" onClick={closeSidebar}>
+          Login <FaUserPlus />
+        </Link>
+      )}
     </Wrapper>
   );
 }

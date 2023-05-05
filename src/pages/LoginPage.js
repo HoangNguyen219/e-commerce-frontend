@@ -1,37 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { PageHero, FormRow, Alert } from '../components';
+import { useUserContext } from '../context/user_context';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   name: '',
   email: '',
   password: '',
   confirmPassword: '',
-  isMember: true,
-  showAlert: true,
 };
 
 const LoginPage = () => {
   const [values, setValues] = useState(initialState);
+  const navigate = useNavigate();
 
-  const toggleMember = () => {
-    setValues({ ...values, isMember: !values.isMember });
-  };
+  const {
+    isLoading,
+    showAlert,
+    alertType,
+    alertText,
+    displayAlert,
+    registerUser,
+    isMember,
+    toggleMember,
+  } = useUserContext();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const { name, email, password, confirmPassword, isMember } = values;
+    if (
+      !email ||
+      !password ||
+      (!isMember && !name) ||
+      (!isMember && !confirmPassword)
+    ) {
+      displayAlert('Please provide all value');
+      return;
+    }
+    if (password !== confirmPassword) {
+      displayAlert('Passwords do not match');
+    }
+
+    const currentUser = { name, email, password, confirmPassword };
+    if (isMember) {
+    } else {
+      registerUser(currentUser);
+    }
   };
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   return (
     <main>
-      <PageHero title={values.isMember ? 'login' : 'register'} />;
+      <PageHero title={isMember ? 'login' : 'register'} />;
       <Wrapper className="page section section-center">
         <form className="form" onSubmit={onSubmit}>
-          {values.showAlert && <Alert />}
+          {showAlert && <Alert alertText={alertText} alertType={alertType} />}
           {/* name input */}
-          {values.isMember || (
+          {isMember || (
             <FormRow
               type="text"
               name="name"
@@ -55,7 +84,7 @@ const LoginPage = () => {
             handleChange={handleChange}
           />
           {/* confirmPassword input */}
-          {values.isMember || (
+          {isMember || (
             <FormRow
               type="password"
               name="confirmPassword"
@@ -65,13 +94,13 @@ const LoginPage = () => {
             />
           )}
 
-          <button type="submit" className="btn btn-block">
-            submit
+          <button type="submit" className="btn btn-block" disabled={isLoading}>
+            {isMember ? 'Login' : 'Register'}
           </button>
           <p>
-            {values.isMember ? 'Not a member yet? ' : 'Already a member? '}
+            {isMember ? 'Not a member yet? ' : 'Already a member? '}
             <button type="button" onClick={toggleMember} className="member-btn">
-              {values.isMember ? 'Register' : 'Login'}
+              {isMember ? 'Register' : 'Login'}
             </button>
           </p>
         </form>

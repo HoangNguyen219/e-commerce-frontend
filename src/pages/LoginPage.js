@@ -24,11 +24,13 @@ const LoginPage = () => {
     registerUser,
     isMember,
     toggleMember,
+    loginUser,
+    user,
   } = useUserContext();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword, isMember } = values;
+    const { name, email, password, confirmPassword } = values;
     if (
       !email ||
       !password ||
@@ -38,12 +40,13 @@ const LoginPage = () => {
       displayAlert('Please provide all value');
       return;
     }
-    if (password !== confirmPassword) {
+    if (!isMember && password !== confirmPassword) {
       displayAlert('Passwords do not match');
     }
 
     const currentUser = { name, email, password, confirmPassword };
     if (isMember) {
+      loginUser(currentUser);
     } else {
       registerUser(currentUser);
     }
@@ -52,6 +55,14 @@ const LoginPage = () => {
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   return (
     <main>

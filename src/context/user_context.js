@@ -3,16 +3,19 @@ import reducer from '../reducers/user_reducer';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_ERROR,
+  LOGIN_USER_SUCCESS,
   REGISTER_USER_BEGIN,
   REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
-  TOGGLE_CART_ITEM_AMOUNT,
   TOGGLE_MEMBER,
 } from '../actions';
-import { BsCurrencyBitcoin } from 'react-icons/bs';
 import axios from 'axios';
 import { auth_url } from '../utils/constants';
 // import { useAuth0 } from '@auth0/auth0-react'
+
+const user = localStorage.getItem('user');
 
 const initialState = {
   isMember: true,
@@ -21,7 +24,7 @@ const initialState = {
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: null,
+  user: user ? JSON.parse(user) : null,
 };
 
 const UserContext = React.createContext();
@@ -39,6 +42,14 @@ export const UserProvider = ({ children }) => {
     }, 3000);
   };
 
+  const addUserToLocalStorage = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('user');
+  };
+
   const registerUser = async (currentUser) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
@@ -48,8 +59,23 @@ export const UserProvider = ({ children }) => {
         payload: response.data.msg,
       });
     } catch (error) {
-      console.log(error.response);
       dispatch({ type: REGISTER_USER_ERROR, payload: error.response.data.msg });
+    }
+    clearAlert();
+  };
+
+  const loginUser = async (currentUser) => {
+    dispatch({ type: LOGIN_USER_BEGIN });
+    try {
+      const response = await axios.post(`${auth_url}/login`, currentUser);
+      const user = response.data.user;
+      dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user,
+      });
+      addUserToLocalStorage(user);
+    } catch (error) {
+      dispatch({ type: LOGIN_USER_ERROR, payload: error.response.data.msg });
     }
     clearAlert();
   };
@@ -60,7 +86,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ ...state, displayAlert, registerUser, toggleMember }}
+      value={{ ...state, displayAlert, registerUser, toggleMember, loginUser }}
     >
       {children}
     </UserContext.Provider>

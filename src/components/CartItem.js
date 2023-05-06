@@ -4,10 +4,22 @@ import { formatPrice } from '../utils/helpers';
 import { useCartContext } from '../context/cart_context';
 import { DECREASE, INCREASE, WHITE, WHITE_DISPLAY } from '../utils/constants';
 import AmountButtons from './AmountButtons';
+import Modal from './Modal';
 import { FaTrash } from 'react-icons/fa';
+import { useState } from 'react';
 
 const CartItem = ({ id, image, name, color, price, amount }) => {
   const { removeItem, toggleAmount } = useCartContext();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const increase = () => {
     toggleAmount(id, INCREASE);
   };
@@ -32,13 +44,15 @@ const CartItem = ({ id, image, name, color, price, amount }) => {
       <h5 className="price">{formatPrice(price)}</h5>
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
       <h5 className="subtotal">{formatPrice(price * amount)}</h5>
-      <button
-        type="button"
-        className="remove-btn"
-        onClick={() => removeItem(id)}
-      >
+      <button type="button" className="remove-btn" onClick={handleShowModal}>
         <FaTrash />
       </button>
+      {showModal && (
+        <Modal
+          handleCloseModal={handleCloseModal}
+          handleDeleteItem={() => removeItem(id)}
+        />
+      )}
     </Wrapper>
   );
 };

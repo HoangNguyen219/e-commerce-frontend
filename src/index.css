@@ -210,8 +210,17 @@ p {
   color: var(--clr-red-dark);
 }
 .btn-danger:hover {
-  background: var(--red-dark);
-  color: var(--white);
+  background: var(--clr-red-dark);
+  color: var(--clr-white);
+}
+
+.btn-safe {
+  background: var(--clr-green-light);
+  color: var(--clr-green-dark);
+}
+.btn-safe:hover {
+  background: var(--clr-green-dark);
+  color: var(--clr-white);
 }
 
 .title {
@@ -230,7 +239,7 @@ p {
   padding: 5rem 0;
 }
 .page {
-  min-height: calc(100vh - (20vh + 10rem));
+  min-height: calc(100vh - (10vh + 10rem));
 }
 
 /* form */

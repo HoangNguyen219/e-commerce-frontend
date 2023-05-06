@@ -20,7 +20,6 @@ const user = localStorage.getItem('user');
 
 export const initialState = {
   isMember: true,
-  userLoading: true,
   isLoading: false,
   showAlert: false,
   alertText: '',

@@ -11,7 +11,13 @@ const Modal = ({ handleCloseModal, handleDeleteItem }) => {
             <button className="btn btn-safe mg" onClick={handleCloseModal}>
               Cancel
             </button>
-            <button className="btn btn-danger" onClick={handleDeleteItem}>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleDeleteItem();
+                handleCloseModal();
+              }}
+            >
               Delete
             </button>
           </div>

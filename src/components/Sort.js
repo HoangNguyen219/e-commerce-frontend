@@ -1,17 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFilterContext } from '../context/filter_context';
+import { useProductsContext } from '../context/products_context';
 import { BsFillGridFill, BsList } from 'react-icons/bs';
+import { sorts } from '../utils/constants';
 
 const Sort = () => {
-  const {
-    filtered_products: products,
-    grid_view,
-    setGridView,
-    setListView,
-    sort,
-    updateSort,
-  } = useFilterContext();
+  const { products, grid_view, setGridView, setListView, sort, handleChange } =
+    useProductsContext();
   return (
     <Wrapper>
       <div className="btn-container">
@@ -39,12 +34,13 @@ const Sort = () => {
           id="sort"
           className="sort-input"
           value={sort}
-          onChange={updateSort}
+          onChange={(e) =>
+            handleChange({ name: 'sort', value: e.target.value })
+          }
         >
-          <option value="price-lowest">Price (Lowest)</option>
-          <option value="price-highest">Price (Highest)</option>
-          <option value="name-a">Name (A-Z)</option>
-          <option value="name-z">Name (Z-A)</option>
+          {sorts.map((sort) => {
+            return <option value={sort.id}>{sort.name}</option>;
+          })}
         </select>
       </form>
     </Wrapper>

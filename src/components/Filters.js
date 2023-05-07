@@ -1,26 +1,82 @@
 import styled from 'styled-components';
-import { useFilterContext } from '../context/filter_context';
+import { useProductsContext } from '../context/products_context';
 import { WHITE, WHITE_DISPLAY, colors } from '../utils/constants';
 import { FaCheck } from 'react-icons/fa';
 import { formatPrice } from '../utils/helpers';
+import { useMemo, useState } from 'react';
+import { useEffect } from 'react';
 
 const Filters = () => {
   const {
-    filters: {
-      text,
-      category,
-      company,
-      color,
-      min_price,
-      price,
-      max_price,
-      shipping,
-    },
-    updateFilters,
+    categoryId,
+    companyId,
+    color,
+    min_price,
+    max_price,
+    shipping,
+    products_loading,
+    handleChange,
     clearFilters,
     categories,
     companies,
-  } = useFilterContext();
+  } = useProductsContext();
+
+  const [localSearch, setLocalSearch] = useState('');
+  const [localPrice, setLocalPrice] = useState(0);
+  useEffect(() => {
+    setLocalPrice(max_price);
+  }, [max_price]);
+
+  const handleSearch = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === 'categoryId' || name === 'color') {
+      value = e.target.dataset.title;
+    }
+
+    if (name === 'price') {
+      value = Number(value);
+    }
+    if (name === 'shipping') {
+      value = e.target.checked;
+    }
+    handleChange({ name, value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLocalSearch('');
+    setLocalPrice(max_price);
+    clearFilters();
+  };
+
+  const debounce = (callback) => {
+    let timeoutID;
+    return (e) => {
+      callback(e);
+      clearTimeout(timeoutID);
+      timeoutID = setTimeout(() => {
+        handleChange({ name: e.target.name, value: e.target.value });
+      }, 1000);
+    };
+  };
+
+  const optimizedDebounceText = useMemo(
+    () =>
+      debounce((e) => {
+        setLocalSearch(e.target.value);
+      }),
+    []
+  );
+
+  const optimizedDebouncePrice = useMemo(
+    () =>
+      debounce((e) => {
+        setLocalPrice(e.target.value);
+      }),
+    []
+  );
 
   return (
     <Wrapper>
@@ -33,8 +89,8 @@ const Filters = () => {
               name="text"
               placeholder="search"
               className="search-input"
-              value={text}
-              onChange={updateFilters}
+              value={localSearch}
+              onChange={optimizedDebounceText}
             />
           </div>
           {/* end search input */}
@@ -46,14 +102,11 @@ const Filters = () => {
                 return (
                   <button
                     key={cate.id}
-                    onClick={updateFilters}
-                    name="category"
+                    onClick={handleSearch}
+                    name="categoryId"
                     type="button"
-                    className={`${
-                      category.toLowerCase() === cate.name.toLowerCase()
-                        ? 'active'
-                        : null
-                    }`}
+                    data-title={cate.id}
+                    className={`${categoryId === cate.id ? 'active' : null}`}
                   >
                     {cate.name}
                   </button>
@@ -66,14 +119,14 @@ const Filters = () => {
           <div className="form-control">
             <h5>company</h5>
             <select
-              name="company"
+              name="companyId"
               className="company"
-              value={company}
-              onChange={updateFilters}
+              value={companyId}
+              onChange={handleSearch}
             >
               {companies.map((comp) => {
                 return (
-                  <option key={comp.id} value={comp.name}>
+                  <option key={comp.id} value={comp.id}>
                     {comp.name}
                   </option>
                 );
@@ -91,7 +144,7 @@ const Filters = () => {
                   color.toLowerCase() === 'all' ? 'all-btn active' : 'all-btn'
                 }`}
                 data-title="All"
-                onClick={updateFilters}
+                onClick={handleSearch}
               >
                 All
               </button>
@@ -107,7 +160,7 @@ const Filters = () => {
                       color === c ? 'color-btn active' : 'color-btn'
                     }`}
                     data-title={c}
-                    onClick={updateFilters}
+                    onClick={handleSearch}
                   >
                     {color === c ? <FaCheck /> : null}
                   </button>
@@ -119,14 +172,14 @@ const Filters = () => {
           {/* price */}
           <div className="form-control">
             <h5>price</h5>
-            <div className="price">{formatPrice(price)}</div>
+            <div className="price">{formatPrice(localPrice)}</div>
             <input
               type="range"
               name="price"
-              onChange={updateFilters}
+              onChange={optimizedDebouncePrice}
               min={min_price}
               max={max_price}
-              value={price}
+              value={localPrice}
             />
           </div>
           {/* end of price */}
@@ -137,13 +190,18 @@ const Filters = () => {
               type="checkbox"
               name="shipping"
               id="shipping"
-              onChange={updateFilters}
+              onChange={handleSearch}
               checked={shipping}
             />
           </div>
           {/* end of shipping */}
         </form>
-        <button type="button" className="clear-btn" onClick={clearFilters}>
+        <button
+          type="button"
+          className="clear-btn"
+          onClick={handleSubmit}
+          disabled={products_loading}
+        >
           clear filters
         </button>
       </div>
@@ -178,7 +236,6 @@ const Wrapper = styled.section`
     border-bottom: 1px solid transparent;
     letter-spacing: var(--spacing);
     color: var(--clr-grey-5);
-    cursor: pointer;
   }
   .active {
     border-color: var(--clr-grey-5);

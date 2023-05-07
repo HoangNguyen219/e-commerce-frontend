@@ -4,3 +4,11 @@ export const formatPrice = (number) => {
     currency: 'USD',
   }).format(number / 100);
 };
+
+export const capitalize = (str) => {
+  const arr = str.split(' ');
+  const capitalizedArr = arr.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+  );
+  return capitalizedArr.join(' ');
+};

@@ -8,6 +8,10 @@ import {
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { capitalize } from '../utils/helpers';
+
 const getLocalStorage = () => {
   let cart = localStorage.getItem('cart');
   if (cart) {
@@ -30,6 +34,7 @@ export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const addToCart = (id, color, amount, product) => {
+    toast.success(`${capitalize(product.name)} added to cart`);
     dispatch({ type: ADD_TO_CART, payload: { id, color, amount, product } });
   };
 

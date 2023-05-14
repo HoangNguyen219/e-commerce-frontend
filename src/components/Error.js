@@ -1,8 +1,12 @@
 import React from 'react';
-const Error = () => {
+const Error = ({ center }) => {
   return (
-    <div className="section section-center text-center">
-      <h2>there was an error...</h2>
+    <div
+      className={
+        center ? 'section section-center text-center' : 'section section-center'
+      }
+    >
+      <h4>there was an error...</h4>
     </div>
   );
 };

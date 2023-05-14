@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 const ProductImages = ({ images }) => {
   const [main, setMain] = useState(images[0]);
+  useEffect(() => {
+    setMain(images[0]);
+  }, [images]);
   return (
     <Wrapper>
       <img src={main} alt="main image" className="main " />

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useProductsContext } from '../context/products_context';
-import { products_url } from '../utils/constants';
 import { formatPrice } from '../utils/helpers';
 import {
   Loading,
@@ -10,29 +9,23 @@ import {
   AddToCart,
   Stars,
   PageHero,
+  Review,
 } from '../components';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const SingleProductPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const {
-    single_product_loading: loading,
-    single_product_error: error,
-    single_product: product,
+    product_loading: loading,
+    product_error: error,
+    product,
     fetchSingleProduct,
   } = useProductsContext();
 
   useEffect(() => {
-    fetchSingleProduct(`${products_url}/${id}`);
+    fetchSingleProduct(id);
   }, [id]);
-  useEffect(() => {
-    if (error) {
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
-    }
-  }, [error]);
+
   if (loading) {
     return <Loading />;
   }
@@ -49,11 +42,12 @@ const SingleProductPage = () => {
     numOfReviews,
     id: sku,
     companyId: company,
+    categoryId: category,
     primaryImage,
     secondaryImages,
+    reviews,
   } = product;
 
-  console.log(product);
   const images = secondaryImages
     ? [primaryImage, ...secondaryImages]
     : [primaryImage];
@@ -73,7 +67,10 @@ const SingleProductPage = () => {
           <ProductImages images={images} />
           <section className="content">
             <h2>{name}</h2>
-            <Stars stars={stars} numOfReviews={numOfReviews} />
+            <div className="stars">
+              <Stars stars={stars} />
+              <p className="reviews">({numOfReviews} customer reviews)</p>
+            </div>
             <h5 className="price">{formatPrice(price)}</h5>
             <p className="desc">{description}</p>
             <p className="info">
@@ -85,14 +82,21 @@ const SingleProductPage = () => {
               {sku}
             </p>
             <p className="info">
-              <span>Brand :</span>
+              <span>Company :</span>
               {company && company.name}
+            </p>
+            <p className="info">
+              <span>Category :</span>
+              {category && category.name}
             </p>
             <hr />
             {stock > 0 && <AddToCart product={product} />}
           </section>
         </div>
       </div>
+      <hr className="section-center" />
+
+      {reviews && <Review reviews={reviews} />}
     </Wrapper>
   );
 };
@@ -104,6 +108,7 @@ const Wrapper = styled.main`
     margin-top: 2rem;
   }
   .price {
+    margin-top: 0.5rem;
     color: var(--clr-primary-5);
   }
   .desc {
@@ -117,6 +122,16 @@ const Wrapper = styled.main`
     grid-template-columns: 125px 1fr;
     span {
       font-weight: 700;
+    }
+  }
+
+  .stars {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-left: 0.5rem;
+      margin-bottom: 0;
     }
   }
 

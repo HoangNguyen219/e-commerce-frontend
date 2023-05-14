@@ -1,17 +1,14 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
-  LOGIN_USER_BEGIN,
-  LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
-  REGISTER_USER_BEGIN,
-  REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
+  SET_ERROR,
+  SET_LOADING,
   TOGGLE_MEMBER,
 } from '../actions';
 import { initialState } from '../context/user_context';
-import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 
 const user_reducer = (state, action) => {
   if (action.type === TOGGLE_MEMBER) {
@@ -21,69 +18,53 @@ const user_reducer = (state, action) => {
     };
   }
   if (action.type === DISPLAY_ALERT) {
+    const { alertText, alertType } = action.payload;
     return {
       ...state,
-      showAlert: true,
-      alertType: ALERT_DANGER,
-      alertText: action.payload,
+      alert: {
+        showAlert: true,
+        alertType,
+        alertText,
+      },
     };
   }
   if (action.type === CLEAR_ALERT) {
     return {
       ...state,
-      showAlert: false,
-      alertType: '',
-      alertText: '',
+      alert: {
+        showAlert: false,
+        alertType: '',
+        alertText: '',
+      },
     };
   }
-  if (action.type === REGISTER_USER_BEGIN) {
+
+  if (action.type === SET_LOADING) {
+    const { isLoading } = action.payload;
     return {
       ...state,
-      isLoading: true,
+      isLoading,
     };
   }
+
+  if (action.type === SET_ERROR) {
+    const { isError } = action.payload;
+    return {
+      ...state,
+      isError,
+    };
+  }
+
   if (action.type === REGISTER_USER_SUCCESS) {
     return {
       ...state,
-      isLoading: false,
-      showAlert: true,
-      alertType: ALERT_SUCCESS,
-      alertText: action.payload,
       isMember: true,
-    };
-  }
-  if (action.type === REGISTER_USER_ERROR) {
-    return {
-      ...state,
-      isLoading: false,
-      showAlert: true,
-      alertType: ALERT_DANGER,
-      alertText: action.payload,
-    };
-  }
-  if (action.type === LOGIN_USER_BEGIN) {
-    return {
-      ...state,
-      isLoading: true,
     };
   }
   if (action.type === LOGIN_USER_SUCCESS) {
     return {
       ...state,
-      isLoading: false,
-      showAlert: true,
-      alertType: ALERT_SUCCESS,
-      alertText: 'Login successful! Redirecting...',
       user: action.payload,
-    };
-  }
-  if (action.type === LOGIN_USER_ERROR) {
-    return {
-      ...state,
-      isLoading: false,
-      showAlert: true,
-      alertType: ALERT_DANGER,
-      alertText: action.payload,
     };
   }
 

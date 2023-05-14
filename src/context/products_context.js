@@ -3,36 +3,31 @@ import {
   SIDEBAR_CLOSE,
   SIDEBAR_OPEN,
   GET_PRODUCTS_SUCCESS,
-  GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
-  GET_SINGLE_PRODUCT_ERROR,
   SET_GRIDVIEW,
   SET_LISTVIEW,
   CLEAR_FILTERS,
-  GET_DATA_BEGIN,
   GET_DATA_SUCCESS,
-  GET_DATA_ERROR,
   HANDLE_CHANGE,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
 import axios from 'axios';
 import {
+  ALERT_SUCCESS,
   categories_url,
   companies_url,
   products_url,
+  reviews_url,
 } from '../utils/constants';
+import { useUserContext } from './user_context';
 
 const ProductsContext = React.createContext();
 const initialState = {
   isSidebarOpen: false,
-  products_loading: false,
-  products_error: false,
   products: [],
   featured_products: [],
-  single_product_loading: false,
-  single_product_error: false,
-  single_product: {},
+  product: {},
   categories: [],
   companies: [],
   grid_view: true,
@@ -52,6 +47,7 @@ const initialState = {
 
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { displayAlert, setLoading, handleError, setError } = useUserContext();
 
   const openSidebar = () => {
     dispatch({ type: SIDEBAR_OPEN });
@@ -62,7 +58,7 @@ export const ProductsProvider = ({ children }) => {
   };
 
   const fetchData = async () => {
-    dispatch({ type: GET_DATA_BEGIN });
+    setLoading(true);
     try {
       const [productsResponse, categoriesResponse, companiesResponse] =
         await Promise.all([
@@ -70,16 +66,18 @@ export const ProductsProvider = ({ children }) => {
           axios.get(categories_url),
           axios.get(companies_url),
         ]);
-      const products = productsResponse.data.products;
-      const categories = categoriesResponse.data.categories;
-      const companies = companiesResponse.data.companies;
+      const { products } = productsResponse.data;
+      const { categories } = categoriesResponse.data;
+      const { companies } = companiesResponse.data;
       dispatch({
         type: GET_DATA_SUCCESS,
         payload: { products, categories, companies },
       });
+      setError(false);
     } catch (error) {
-      dispatch({ type: GET_DATA_ERROR });
+      handleError(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -87,11 +85,11 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   const getProducts = async () => {
+    setLoading(true);
     const { page, text, companyId, categoryId, color, price, shipping, sort } =
       state;
 
     let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&sort=${sort}`;
-    dispatch({ type: GET_DATA_BEGIN });
     try {
       const { data } = await axios.get(url);
       const { products, totalProducts, numOfPages } = data;
@@ -103,20 +101,44 @@ export const ProductsProvider = ({ children }) => {
           numOfPages,
         },
       });
+      setError(false);
     } catch (error) {
-      dispatch({ type: GET_DATA_ERROR });
+      handleError(error);
     }
+    setLoading(false);
   };
 
-  const fetchSingleProduct = async (url) => {
-    dispatch({ type: GET_SINGLE_PRODUCT_BEGIN });
+  const fetchSingleProduct = async (id) => {
+    setLoading(true);
     try {
-      const response = await axios.get(url);
-      const product = response.data.product;
-      dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: product });
+      const productResponse = await axios.get(`${products_url}/${id}`);
+      const { product } = productResponse.data;
+
+      dispatch({
+        type: GET_SINGLE_PRODUCT_SUCCESS,
+        payload: { product },
+      });
+      setError(false);
     } catch (error) {
-      dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
+      handleError(error);
     }
+    setLoading(false);
+  };
+
+  const createReview = async (review) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(reviews_url, review);
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Rating added!',
+      });
+      fetchSingleProduct(review.productId);
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
   };
 
   const setGridView = () => {
@@ -147,6 +169,7 @@ export const ProductsProvider = ({ children }) => {
         clearFilters,
         getProducts,
         handleChange,
+        createReview,
       }}
     >
       {children}

@@ -282,6 +282,7 @@ p {
 
 .form-textarea {
   height: 7rem;
+  resize: none;
 }
 ::placeholder {
   font-family: inherit;

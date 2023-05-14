@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import GridView from './GridView';
 import { useProductsContext } from '../context/products_context';
+import { useUserContext } from '../context/user_context';
 import ListView from './ListView';
 import Loading from './Loading';
+import { Error } from '.';
 
 const ProductList = () => {
   const {
@@ -17,14 +19,19 @@ const ProductList = () => {
     shipping,
     sort,
     page,
-    products_loading: loading,
   } = useProductsContext();
+
+  const { isLoading, isError } = useUserContext();
   useEffect(() => {
     getProducts();
   }, [page, text, categoryId, companyId, color, price, shipping, sort]);
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   if (products.length < 1) {

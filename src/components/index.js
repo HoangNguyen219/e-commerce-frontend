@@ -17,6 +17,7 @@ import ProductList from './ProductList';
 import CartContent from './CartContent';
 import FormRow from './FormRow';
 import Alert from './Alert';
+import Review from './Review';
 
 export {
   Navbar,
@@ -38,4 +39,5 @@ export {
   CartContent,
   FormRow,
   Alert,
+  Review,
 };

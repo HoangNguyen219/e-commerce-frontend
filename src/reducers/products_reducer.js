@@ -2,12 +2,8 @@ import {
   SIDEBAR_CLOSE,
   SIDEBAR_OPEN,
   GET_PRODUCTS_SUCCESS,
-  GET_SINGLE_PRODUCT_ERROR,
-  GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
-  GET_DATA_BEGIN,
   GET_DATA_SUCCESS,
-  GET_DATA_ERROR,
   SET_GRIDVIEW,
   SET_LISTVIEW,
   CLEAR_FILTERS,
@@ -22,64 +18,39 @@ const products_reducer = (state, action) => {
     return { ...state, isSidebarOpen: false };
   }
 
-  if (action.type === GET_DATA_BEGIN) {
-    return { ...state, products_loading: true };
-  }
-
   if (action.type === GET_DATA_SUCCESS) {
-    const payload = action.payload;
-    const featured_products = payload.products.filter(
+    const { products, categories, companies } = action.payload;
+    const featured_products = products.filter(
       (product) => product.featured === true
     );
-    let maxPrice = payload.products.map((product) => product.price);
+    let maxPrice = products.map((product) => product.price);
     maxPrice = Math.max(...maxPrice);
     return {
       ...state,
-      products_loading: false,
-      products: payload.products,
+      products,
       featured_products,
-      companies: [{ id: 'all', name: 'All' }, ...payload.companies],
-      categories: [{ id: 'all', name: 'All' }, ...payload.categories],
+      companies: [{ id: 'all', name: 'All' }, ...companies],
+      categories: [{ id: 'all', name: 'All' }, ...categories],
       max_price: maxPrice,
       price: maxPrice,
     };
   }
 
-  if (action.type === GET_DATA_ERROR) {
-    return { ...state, products_loading: false, products_error: true };
-  }
-
-  if (action.type === GET_SINGLE_PRODUCT_BEGIN) {
-    return {
-      ...state,
-      single_product_loading: true,
-      single_product_error: false,
-    };
-  }
-
   if (action.type === GET_SINGLE_PRODUCT_SUCCESS) {
+    const { product } = action.payload;
     return {
       ...state,
-      single_product_loading: false,
-      single_product: action.payload,
-    };
-  }
-
-  if (action.type === GET_SINGLE_PRODUCT_ERROR) {
-    return {
-      ...state,
-      single_product_loading: false,
-      single_product_error: true,
+      product,
     };
   }
 
   if (action.type === GET_PRODUCTS_SUCCESS) {
+    const { products, totalProducts, numOfPages } = action.payload;
     return {
       ...state,
-      products_loading: false,
-      products: action.payload.products,
-      totalProducts: action.payload.totalProducts,
-      numOfPages: action.payload.numOfPages,
+      products,
+      totalProducts,
+      numOfPages,
     };
   }
 

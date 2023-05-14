@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { PageHero, FormRow, Alert } from '../components';
+import { PageHero, FormRow, Alert, Loading } from '../components';
 import { useUserContext } from '../context/user_context';
 import { useNavigate } from 'react-router-dom';
+import { ALERT_DANGER } from '../utils/constants';
 
 const initialState = {
   name: '',
@@ -17,9 +18,7 @@ const LoginPage = () => {
 
   const {
     isLoading,
-    showAlert,
-    alertType,
-    alertText,
+    alert,
     displayAlert,
     registerUser,
     isMember,
@@ -37,11 +36,17 @@ const LoginPage = () => {
       (!isMember && !name) ||
       (!isMember && !confirmPassword)
     ) {
-      displayAlert('Please provide all value');
+      displayAlert({
+        alertText: 'Please provide all values',
+        alertType: ALERT_DANGER,
+      });
       return;
     }
     if (!isMember && password !== confirmPassword) {
-      displayAlert('Passwords do not match');
+      displayAlert({
+        alertText: 'Passwords do not match',
+        alertType: ALERT_DANGER,
+      });
     }
 
     const currentUser = { name, email, password, confirmPassword };
@@ -69,7 +74,9 @@ const LoginPage = () => {
       <PageHero title={isMember ? 'login' : 'register'} />;
       <Wrapper className="page section section-center">
         <form className="form" onSubmit={onSubmit}>
-          {showAlert && <Alert alertText={alertText} alertType={alertType} />}
+          {alert.showAlert && (
+            <Alert alertText={alert.alertText} alertType={alert.alertType} />
+          )}
           {/* name input */}
           {isMember || (
             <FormRow
@@ -104,6 +111,8 @@ const LoginPage = () => {
               handleChange={handleChange}
             />
           )}
+
+          {isLoading && <Loading />}
 
           <button type="submit" className="btn btn-block" disabled={isLoading}>
             {isMember ? 'Login' : 'Register'}

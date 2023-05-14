@@ -77,6 +77,7 @@ export const products_url = '/api/v1/products';
 export const categories_url = '/api/v1/categories';
 export const companies_url = '/api/v1/companies';
 export const auth_url = '/api/v1/auth';
+export const reviews_url = '/api/v1/reviews';
 
 // export const products_url = 'https://course-api.com/react-store-products'
 

@@ -33,11 +33,18 @@ const SideBar = () => {
             );
           })}
           {user && (
-            <li>
-              <Link to="/checkout" onClick={closeSidebar}>
-                checkout
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/me" onClick={closeSidebar}>
+                  me
+                </Link>
+              </li>
+              <li>
+                <Link to="/checkout" onClick={closeSidebar}>
+                  checkout
+                </Link>
+              </li>
+            </>
           )}
         </ul>
         <CartButtons />

@@ -7,6 +7,7 @@ import ProductsPage from './ProductsPage';
 import SingleProductPage from './SingleProductPage';
 import CartPage from './CartPage';
 import LoginPage from './LoginPage';
+import { MePage, AddressPage, AddAdressPage } from './mePage';
 
 export {
   HomePage,
@@ -18,4 +19,7 @@ export {
   SingleProductPage,
   CartPage,
   LoginPage,
+  MePage,
+  AddressPage,
+  AddAdressPage,
 };

@@ -1,9 +1,13 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  GET_ADDRESSES,
+  HANDLE_CLOSE_MODAL,
+  HANDLE_SHOW_MODAL,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   REGISTER_USER_SUCCESS,
+  SET_EDIT_ADDRESS,
   SET_ERROR,
   SET_LOADING,
   TOGGLE_MEMBER,
@@ -68,10 +72,46 @@ const user_reducer = (state, action) => {
     };
   }
 
+  if (action.type === GET_ADDRESSES) {
+    const { addresses } = action.payload;
+    return {
+      ...state,
+      addresses,
+    };
+  }
+
   if (action.type === LOGOUT_USER) {
     return {
       ...initialState,
       user: null,
+    };
+  }
+
+  if (action.type === SET_EDIT_ADDRESS) {
+    const address = state.addresses.find(
+      (address) => address.id === action.payload.id
+    );
+    return {
+      ...state,
+      isEditing: true,
+      address,
+    };
+  }
+
+  if (action.type === HANDLE_SHOW_MODAL) {
+    const { callback, index } = action.payload;
+    return {
+      ...state,
+      showModal: true,
+      deleteFn: { callback, index },
+    };
+  }
+
+  if (action.type === HANDLE_CLOSE_MODAL) {
+    return {
+      ...state,
+      showModal: false,
+      deleteFn: null,
     };
   }
 

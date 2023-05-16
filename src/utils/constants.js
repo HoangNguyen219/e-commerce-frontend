@@ -1,5 +1,9 @@
 import React from 'react';
 import { GiCompass, GiDiamondHard, GiStabbedNote } from 'react-icons/gi';
+import { IoCart } from 'react-icons/io5';
+import { FaUser } from 'react-icons/fa';
+import { MdOutlineHomeWork } from 'react-icons/md';
+
 export const links = [
   {
     id: 1,
@@ -15,6 +19,22 @@ export const links = [
     id: 3,
     text: 'products',
     url: '/products',
+  },
+];
+
+export const meLinks = [
+  { id: 1, text: 'my orders', path: '/me', icon: <IoCart /> },
+  {
+    id: 2,
+    text: 'account & securiry',
+    path: '/me/acount',
+    icon: <FaUser />,
+  },
+  {
+    id: 3,
+    text: 'my addresses',
+    path: '/me/addresses',
+    icon: <MdOutlineHomeWork />,
   },
 ];
 
@@ -73,12 +93,11 @@ export const DECREASE = 'decrease';
 export const ALERT_DANGER = 'danger';
 export const ALERT_SUCCESS = 'success';
 
-export const products_url = '/api/v1/products';
-export const categories_url = '/api/v1/categories';
-export const companies_url = '/api/v1/companies';
-export const auth_url = '/api/v1/auth';
-export const reviews_url = '/api/v1/reviews';
+export const products_url = 'products';
+export const categories_url = 'categories';
+export const companies_url = 'companies';
+export const auth_url = 'auth';
+export const reviews_url = 'reviews';
+export const address_url = 'addresses';
 
-// export const products_url = 'https://course-api.com/react-store-products'
-
-// export const single_product_url = `https://course-api.com/react-store-single-product?id=`
+export const baseUrl = '/api/v1';

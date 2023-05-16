@@ -10,6 +10,9 @@ import {
   SingleProductPage,
   CartPage,
   LoginPage,
+  MePage,
+  AddressPage,
+  AddAdressPage,
 } from './pages';
 
 import { ToastContainer } from 'react-toastify';
@@ -36,6 +39,19 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/me"
+          element={
+            <PrivateRoute>
+              <MePage />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<AboutPage />} />
+          <Route path="addresses" element={<AddressPage />} />
+          <Route path="add-address" element={<AddAdressPage />} />
+        </Route>
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

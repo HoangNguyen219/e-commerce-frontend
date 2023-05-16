@@ -18,6 +18,8 @@ import CartContent from './CartContent';
 import FormRow from './FormRow';
 import Alert from './Alert';
 import Review from './Review';
+import MeSideBar from './MeSidebar';
+import FormRowSelect from './FormRowSelect';
 
 export {
   Navbar,
@@ -40,4 +42,6 @@ export {
   FormRow,
   Alert,
   Review,
+  MeSideBar,
+  FormRowSelect,
 };

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useReducer } from 'react';
+import authFetch from '../utils/authFetch';
 import {
   SIDEBAR_CLOSE,
   SIDEBAR_OPEN,
@@ -12,7 +13,6 @@ import {
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
-import axios from 'axios';
 import {
   ALERT_SUCCESS,
   categories_url,
@@ -47,7 +47,10 @@ const initialState = {
 
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { displayAlert, setLoading, handleError, setError } = useUserContext();
+  const { displayAlert, setLoading, handleError, setError, logoutUser } =
+    useUserContext();
+
+  const myFetch = authFetch(logoutUser);
 
   const openSidebar = () => {
     dispatch({ type: SIDEBAR_OPEN });
@@ -62,9 +65,9 @@ export const ProductsProvider = ({ children }) => {
     try {
       const [productsResponse, categoriesResponse, companiesResponse] =
         await Promise.all([
-          axios.get(products_url),
-          axios.get(categories_url),
-          axios.get(companies_url),
+          myFetch.get(products_url),
+          myFetch.get(categories_url),
+          myFetch.get(companies_url),
         ]);
       const { products } = productsResponse.data;
       const { categories } = categoriesResponse.data;
@@ -91,7 +94,7 @@ export const ProductsProvider = ({ children }) => {
 
     let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&sort=${sort}`;
     try {
-      const { data } = await axios.get(url);
+      const { data } = await myFetch.get(url);
       const { products, totalProducts, numOfPages } = data;
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
@@ -111,7 +114,7 @@ export const ProductsProvider = ({ children }) => {
   const fetchSingleProduct = async (id) => {
     setLoading(true);
     try {
-      const productResponse = await axios.get(`${products_url}/${id}`);
+      const productResponse = await myFetch.get(`${products_url}/${id}`);
       const { product } = productResponse.data;
 
       dispatch({
@@ -128,7 +131,7 @@ export const ProductsProvider = ({ children }) => {
   const createReview = async (review) => {
     setLoading(true);
     try {
-      const response = await axios.post(reviews_url, review);
+      const response = await myFetch.post(reviews_url, review);
       displayAlert({
         alertType: ALERT_SUCCESS,
         alertText: 'Rating added!',

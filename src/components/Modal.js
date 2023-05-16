@@ -45,7 +45,8 @@ const Wrapper = styled.div`
     margin: 15% auto;
     padding: 20px;
     border: 2px solid var(--clr-primary-5);
-    width: 80%;
+    width: 60%;
+    min-width: 400px;
   }
 
   .btn-modal {

@@ -1,17 +1,26 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/user_reducer';
+import authFetch from '../utils/authFetch';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  GET_ADDRESSES,
+  HANDLE_CLOSE_MODAL,
+  HANDLE_SHOW_MODAL,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   REGISTER_USER_SUCCESS,
+  SET_EDIT_ADDRESS,
   SET_ERROR,
   SET_LOADING,
   TOGGLE_MEMBER,
 } from '../actions';
-import axios from 'axios';
-import { ALERT_DANGER, ALERT_SUCCESS, auth_url } from '../utils/constants';
+import {
+  ALERT_DANGER,
+  ALERT_SUCCESS,
+  address_url,
+  auth_url,
+} from '../utils/constants';
 
 const user = localStorage.getItem('user');
 
@@ -21,11 +30,25 @@ export const initialState = {
   isError: false,
   alert: { showAlert: false, alertType: '', alertText: '' },
   user: user ? JSON.parse(user) : null,
+  addresses: [],
+  address: {},
+  isEditing: false,
+  showModal: false,
+  deleteFn: null,
 };
 
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const logoutUser = async () => {
+    dispatch({ type: LOGOUT_USER });
+    try {
+      await myFetch.get(`${auth_url}/logout`);
+    } catch (error) {}
+    removeUserFromLocalStorage();
+  };
+  const myFetch = authFetch(logoutUser);
 
   const displayAlert = ({ alertText, alertType }) => {
     dispatch({ type: DISPLAY_ALERT, payload: { alertText, alertType } });
@@ -57,7 +80,7 @@ export const UserProvider = ({ children }) => {
   const registerUser = async (currentUser) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${auth_url}/register`, currentUser);
+      const response = await myFetch.post(`${auth_url}/register`, currentUser);
       dispatch({
         type: REGISTER_USER_SUCCESS,
       });
@@ -75,7 +98,7 @@ export const UserProvider = ({ children }) => {
   const loginUser = async (currentUser) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${auth_url}/login`, currentUser);
+      const response = await myFetch.post(`${auth_url}/login`, currentUser);
       const user = response.data.user;
       dispatch({
         type: LOGIN_USER_SUCCESS,
@@ -93,14 +116,6 @@ export const UserProvider = ({ children }) => {
     setLoading(false);
   };
 
-  const logoutUser = async () => {
-    dispatch({ type: LOGOUT_USER });
-    try {
-      await axios.get(`${auth_url}/logout`);
-    } catch (error) {}
-    removeUserFromLocalStorage();
-  };
-
   const handleError = (error) => {
     const msg = error.response.data.msg;
     displayAlert({
@@ -108,6 +123,80 @@ export const UserProvider = ({ children }) => {
       alertText: msg,
     });
     setError(true);
+  };
+
+  const getAddresses = async () => {
+    setLoading(true);
+    try {
+      const response = await myFetch.get(`${address_url}/showAllMyAddresses`);
+      dispatch({
+        type: GET_ADDRESSES,
+        payload: { addresses: response.data.addresses },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const setEditAddress = (id) => {
+    dispatch({ type: SET_EDIT_ADDRESS, payload: { id } });
+  };
+
+  const createAddress = async (data) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.post(address_url, data);
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Address created! Redirecting...',
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const editAddress = async (data) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.patch(
+        `${address_url}/${state.address.id}`,
+        data
+      );
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Address updated! Redirecting...',
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const deleteAddress = async (id) => {
+    setLoading(true);
+    try {
+      await myFetch.delete(`/${address_url}/${id}`);
+      setError(false);
+
+      getAddresses();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const handleShowModal = (callback, index) => {
+    dispatch({ type: HANDLE_SHOW_MODAL, payload: { callback, index } });
+  };
+
+  const handleCloseModal = () => {
+    dispatch({ type: HANDLE_CLOSE_MODAL });
   };
 
   const toggleMember = () => {
@@ -126,6 +215,13 @@ export const UserProvider = ({ children }) => {
         setLoading,
         handleError,
         setError,
+        getAddresses,
+        createAddress,
+        setEditAddress,
+        deleteAddress,
+        handleShowModal,
+        handleCloseModal,
+        editAddress,
       }}
     >
       {children}

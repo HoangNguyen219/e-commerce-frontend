@@ -12,3 +12,7 @@ export const capitalize = (str) => {
   );
   return capitalizedArr.join(' ');
 };
+
+export const toInt = (number) => {
+  return Number.isNaN(parseInt(number)) ? -1 : parseInt(number);
+};

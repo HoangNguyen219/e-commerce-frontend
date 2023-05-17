@@ -14,6 +14,7 @@ import {
   SET_ERROR,
   SET_LOADING,
   TOGGLE_MEMBER,
+  UNSET_EDIT,
 } from '../actions';
 import {
   ALERT_DANGER,
@@ -203,6 +204,10 @@ export const UserProvider = ({ children }) => {
     dispatch({ type: TOGGLE_MEMBER });
   };
 
+  const unsetEdit = () => {
+    dispatch({ type: UNSET_EDIT });
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -222,6 +227,7 @@ export const UserProvider = ({ children }) => {
         handleShowModal,
         handleCloseModal,
         editAddress,
+        unsetEdit,
       }}
     >
       {children}

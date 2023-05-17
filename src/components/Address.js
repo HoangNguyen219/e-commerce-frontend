@@ -54,7 +54,7 @@ const Address = ({ addresses }) => {
                   <td>
                     {address}, {city}, {state}, {country}
                   </td>
-                  <td>{isDefault}</td>
+                  <td>{isDefault && <span>Default</span>}</td>
                   <td>
                     <div className="actions">
                       <Link

@@ -72,6 +72,9 @@ const AddAdressPage = () => {
 
   const handleInput = (e) => {
     let { name, value } = e.target;
+    if (name === 'isDefault') {
+      value = e.target.checked;
+    }
     setValues((values) => {
       return { ...values, [name]: value };
     });
@@ -79,7 +82,7 @@ const AddAdressPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let { name, mobile, country, state, city, address } = values;
+    let { name, mobile, country, state, city, address, isDefault } = values;
     if (!name || !mobile || !address) {
       displayAlert({
         alertType: ALERT_DANGER,
@@ -98,7 +101,7 @@ const AddAdressPage = () => {
     country = Country.getCountryByCode(country).name;
     state = State.getStateByCode(state).name;
 
-    const data = { name, mobile, country, state, city, address };
+    const data = { name, mobile, country, state, city, address, isDefault };
 
     if (isEditing) {
       return editAddress(data);
@@ -170,6 +173,17 @@ const AddAdressPage = () => {
           />
         </div>
 
+        <div className="form-row shipping">
+          <label htmlFor="isDefault">Set as default address</label>
+          <input
+            type="checkbox"
+            name="isDefault"
+            id="isDefault"
+            onChange={handleInput}
+            checked={values.isDefault}
+          />
+        </div>
+
         {alert.showAlert && (
           <Alert alertText={alert.alertText} alertType={alert.alertType} />
         )}
@@ -221,6 +235,16 @@ const Wrapper = styled.div`
     align-self: end;
     height: 35px;
     margin-top: 1rem;
+  }
+
+  .shipping {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    text-transform: capitalize;
+    column-gap: 2.5rem;
+    font-size: 1rem;
+    width: fit-content;
   }
 
   @media (min-width: 992px) {

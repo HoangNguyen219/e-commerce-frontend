@@ -10,7 +10,10 @@ import {
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUserContext } from './user_context';
 import { capitalize } from '../utils/helpers';
+import { ALERT_SUCCESS, orders_url } from '../utils/constants';
+import authFetch from '../utils/authFetch';
 
 const getLocalStorage = () => {
   let cart = localStorage.getItem('cart');
@@ -31,8 +34,11 @@ const initialState = {
 const CartContext = React.createContext();
 
 export const CartProvider = ({ children }) => {
+  const { logoutUser, setLoading, displayAlert, setError, handleError } =
+    useUserContext();
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const myFetch = authFetch(logoutUser);
   const addToCart = (id, color, amount, product) => {
     toast.success(`${capitalize(product.name)} added to cart`, {
       autoClose: 1000,
@@ -50,13 +56,37 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: CLEAR_CART });
   };
 
+  const createOrder = async (values) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.post(orders_url, values);
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Order created! Redirecting...',
+      });
+      clearCart();
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     dispatch({ type: COUNT_CART_TOTALS });
     localStorage.setItem('cart', JSON.stringify(state.cart));
   }, [state.cart]);
+
   return (
     <CartContext.Provider
-      value={{ ...state, addToCart, removeItem, toggleAmount, clearCart }}
+      value={{
+        ...state,
+        addToCart,
+        removeItem,
+        toggleAmount,
+        clearCart,
+        createOrder,
+      }}
     >
       {children}
     </CartContext.Provider>

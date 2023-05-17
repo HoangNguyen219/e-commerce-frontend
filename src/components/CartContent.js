@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
 import CartColumns from './CartColumns';
 import CartItem from './CartItem';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,8 @@ import CartTotal from './CartTotal';
 
 const CartContent = () => {
   const { cart, clearCart } = useCartContext();
+  const { user } = useUserContext();
+
   return (
     <Wrapper className="section section-center">
       <CartColumns />
@@ -27,7 +30,20 @@ const CartContent = () => {
           clear shopping cart
         </button>
       </div>
-      <CartTotal />
+      <section className="total">
+        <div>
+          <CartTotal />
+          {user ? (
+            <Link to="/checkout" className="btn">
+              process to checkout
+            </Link>
+          ) : (
+            <Link to="/login" className="btn">
+              login
+            </Link>
+          )}
+        </div>
+      </section>
     </Wrapper>
   );
 };
@@ -52,6 +68,23 @@ const Wrapper = styled.section`
   }
   .clear-btn {
     background: var(--clr-black);
+  }
+  .total {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    @media (min-width: 776px) {
+      justify-content: flex-end;
+    }
+    .btn {
+      width: 100%;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 700;
+    }
+    div {
+      width: 400px;
+    }
   }
 `;
 

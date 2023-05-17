@@ -307,10 +307,6 @@ const Wrapper = styled.section`
     column-gap: 2.5rem;
     font-size: 1rem;
     width: fit-content;
-    input {
-      position: relative;
-      bottom: -3px;
-    }
   }
   .clear-btn {
     background: var(--clr-red-dark);

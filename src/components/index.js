@@ -20,6 +20,9 @@ import Alert from './Alert';
 import Review from './Review';
 import MeSideBar from './MeSidebar';
 import FormRowSelect from './FormRowSelect';
+import AddressRadio from './AddressRadio';
+import AddButton from './AddButton';
+import CartTotal from './CartTotal';
 
 export {
   Navbar,
@@ -44,4 +47,7 @@ export {
   Review,
   MeSideBar,
   FormRowSelect,
+  AddressRadio,
+  AddButton,
+  CartTotal,
 };

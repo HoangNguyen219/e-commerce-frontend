@@ -99,5 +99,6 @@ export const companies_url = 'companies';
 export const auth_url = 'auth';
 export const reviews_url = 'reviews';
 export const address_url = 'addresses';
+export const orders_url = 'orders';
 
 export const baseUrl = '/api/v1';

@@ -2,46 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
 import { useCartContext } from '../context/cart_context';
-import { Link } from 'react-router-dom';
-import { useUserContext } from '../context/user_context';
 
 const CartTotal = () => {
   const { total, shipping_fee } = useCartContext();
-  const { user } = useUserContext();
 
   return (
     <Wrapper>
-      <div>
-        <article>
-          <h5>
-            subtotal: <span>{formatPrice(total)}</span>
-          </h5>
-          <p>
-            shipping fee: <span>{formatPrice(shipping_fee)}</span>
-          </p>
-          <hr />
-          <h4>
-            order total: <span>{formatPrice(total + shipping_fee)}</span>
-          </h4>
-        </article>
-        {user ? (
-          <Link to="/checkout" className="btn">
-            process to checkout
-          </Link>
-        ) : (
-          <Link to="/login" className="btn">
-            login
-          </Link>
-        )}
-      </div>
+      <article>
+        <h5>
+          subtotal: <span>{formatPrice(total)}</span>
+        </h5>
+        <p>
+          shipping fee: <span>{formatPrice(shipping_fee)}</span>
+        </p>
+        <hr />
+        <h4>
+          order total: <span>{formatPrice(total + shipping_fee)}</span>
+        </h4>
+      </article>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.section`
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
+const Wrapper = styled.div`
   article {
     border: 1px solid var(--clr-grey-8);
     border-radius: var(--radius);
@@ -51,22 +34,13 @@ const Wrapper = styled.section`
   h5,
   p {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 1fr auto;
   }
   p {
     text-transform: capitalize;
   }
   h4 {
     margin-top: 2rem;
-  }
-  @media (min-width: 776px) {
-    justify-content: flex-end;
-  }
-  .btn {
-    width: 100%;
-    margin-top: 1rem;
-    text-align: center;
-    font-weight: 700;
   }
 `;
 

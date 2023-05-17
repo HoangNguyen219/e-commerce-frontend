@@ -32,7 +32,7 @@ const AddressPage = () => {
       <h5 className="inline">
         {addresses.length} address
         {addresses.length > 1 && 'es'} found
-        <AddButton />
+        <AddButton mgLeft={true} />
       </h5>
 
       <Address addresses={addresses} />

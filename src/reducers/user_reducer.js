@@ -11,6 +11,7 @@ import {
   SET_ERROR,
   SET_LOADING,
   TOGGLE_MEMBER,
+  UNSET_EDIT,
 } from '../actions';
 import { initialState } from '../context/user_context';
 
@@ -48,6 +49,14 @@ const user_reducer = (state, action) => {
     return {
       ...state,
       isLoading,
+    };
+  }
+
+  if (action.type === UNSET_EDIT) {
+    return {
+      ...state,
+      isEditing: false,
+      address: {},
     };
   }
 

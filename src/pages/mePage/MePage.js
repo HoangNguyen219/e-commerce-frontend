@@ -30,6 +30,14 @@ const Wrapper = styled.div`
     margin: 0 auto;
     padding: 2rem 0;
   }
+  td {
+    span {
+      border: solid 1px red;
+      color: red;
+      padding: 2px;
+      font-size: 0.8rem;
+    }
+  }
 `;
 
 export default MePage;

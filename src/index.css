@@ -337,11 +337,16 @@ table {
   border-collapse: collapse;
   width: 100%;
   background: var(--clr-white);
+  box-shadow: var(--dark-shadow);
+  transition: var(--transition);
+}
+
+table:hover {
+  box-shadow: var(--light-shadow);
 }
 
 thead {
   background: var(--clr-primary-5);
-
 }
 
 tr {
@@ -360,6 +365,7 @@ th {
   font-weight: 500;
   color: var(--clr-white);
   text-align: left;
+  text-transform: capitalize;
 }
 
 td {

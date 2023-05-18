@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import Loading from '../../components/Loading';
-import AddButton from '../../components/AddButton';
 import { useUserContext } from '../../context/user_context';
-import Address from '../../components/Address';
+import { Address, Loading, AddButton } from '../../components';
 
 const AddressPage = () => {
   const { isLoading, isError, getAddresses, addresses } = useUserContext();

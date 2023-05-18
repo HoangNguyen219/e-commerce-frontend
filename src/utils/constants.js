@@ -26,8 +26,8 @@ export const meLinks = [
   { id: 1, text: 'my orders', path: '/me', icon: <IoCart /> },
   {
     id: 2,
-    text: 'account & securiry',
-    path: '/me/acount',
+    text: 'account & security',
+    path: '/me/account',
     icon: <FaUser />,
   },
   {
@@ -100,5 +100,6 @@ export const auth_url = 'auth';
 export const reviews_url = 'reviews';
 export const address_url = 'addresses';
 export const orders_url = 'orders';
+export const users_url = 'users';
 
 export const baseUrl = '/api/v1';

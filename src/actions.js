@@ -42,3 +42,8 @@ export const HANDLE_SHOW_MODAL = 'HANDLE_SHOW_MODAL';
 
 export const HANDLE_CLOSE_MODAL = 'HANDLE_CLOSE_MODAL';
 export const UNSET_EDIT = 'UNSET_EDIT';
+
+export const GET_ORDERS = 'GET_ORDERS';
+export const GET_SINGLE_ORDER = 'GET_SINGLE_ORDER';
+
+export const GET_ME = 'GET_ME';

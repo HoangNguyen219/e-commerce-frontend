@@ -2,6 +2,8 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   COUNT_CART_TOTALS,
+  GET_ORDERS,
+  GET_SINGLE_ORDER,
   REMOVE_CART_ITEM,
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
@@ -76,6 +78,23 @@ const cart_reducer = (state, action) => {
     );
     return { ...state, total_items, total };
   }
+
+  if (action.type === GET_ORDERS) {
+    const { orders } = action.payload;
+    return {
+      ...state,
+      orders,
+    };
+  }
+
+  if (action.type === GET_SINGLE_ORDER) {
+    const { order } = action.payload;
+    return {
+      ...state,
+      order,
+    };
+  }
+
   throw new Error(`No matching "${action.type}" - action type`);
 };
 

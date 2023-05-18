@@ -23,6 +23,10 @@ import FormRowSelect from './FormRowSelect';
 import AddressRadio from './AddressRadio';
 import AddButton from './AddButton';
 import CartTotal from './CartTotal';
+import Address from './Address';
+import CartColumns from './CartColumns';
+import CartItem from './CartItem';
+import OrderItem from './OrderItem';
 
 export {
   Navbar,
@@ -50,4 +54,8 @@ export {
   AddressRadio,
   AddButton,
   CartTotal,
+  Address,
+  CartColumns,
+  CartItem,
+  OrderItem,
 };

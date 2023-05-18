@@ -64,7 +64,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (user) {
       setTimeout(() => {
-        navigate('/');
+        navigate('/me');
       }, 3000);
     }
   }, [user, navigate]);

@@ -10,7 +10,7 @@ import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
-  const { cart, shipping_fee, createOrder } = useCartContext();
+  const { cart, shipping_fee, createOrder, total } = useCartContext();
   const { addresses, getAddresses, isLoading, alert, displayAlert } =
     useUserContext();
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ const CheckoutPage = () => {
                     );
                   })}
                 </div>
-                <CartTotal />
+                <CartTotal total={total} shipping_fee={shipping_fee} />
               </div>
               <div className="checkout-payment">
                 <h2>Payment Methods</h2>

@@ -7,7 +7,16 @@ import ProductsPage from './ProductsPage';
 import SingleProductPage from './SingleProductPage';
 import CartPage from './CartPage';
 import LoginPage from './LoginPage';
-import { MePage, AddressPage, AddAdressPage } from './mePage';
+import {
+  MePage,
+  AddressPage,
+  AddAdressPage,
+  OrderPage,
+  OrderDetailsPage,
+  AccountPage,
+  EditAccountPage,
+  ChangePasswordPage,
+} from './mePage';
 
 export {
   HomePage,
@@ -22,4 +31,9 @@ export {
   MePage,
   AddressPage,
   AddAdressPage,
+  OrderPage,
+  OrderDetailsPage,
+  AccountPage,
+  EditAccountPage,
+  ChangePasswordPage,
 };

@@ -1,11 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
-import { useCartContext } from '../context/cart_context';
 
-const CartTotal = () => {
-  const { total, shipping_fee } = useCartContext();
-
+const CartTotal = ({ total, shipping_fee }) => {
   return (
     <Wrapper>
       <article>

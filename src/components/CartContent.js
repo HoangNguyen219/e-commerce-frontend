@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import CartTotal from './CartTotal';
 
 const CartContent = () => {
-  const { cart, clearCart } = useCartContext();
+  const { cart, clearCart, total, shipping_fee } = useCartContext();
   const { user } = useUserContext();
 
   return (
@@ -32,7 +32,7 @@ const CartContent = () => {
       </div>
       <section className="total">
         <div>
-          <CartTotal />
+          <CartTotal total={total} shipping_fee={shipping_fee} />
           {user ? (
             <Link to="/checkout" className="btn">
               process to checkout

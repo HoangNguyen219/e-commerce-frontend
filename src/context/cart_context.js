@@ -4,6 +4,8 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   COUNT_CART_TOTALS,
+  GET_ORDERS,
+  GET_SINGLE_ORDER,
   REMOVE_CART_ITEM,
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
@@ -29,6 +31,8 @@ const initialState = {
   total_items: 0,
   total: 0,
   shipping_fee: 534,
+  orders: [],
+  order: {},
 };
 
 const CartContext = React.createContext();
@@ -72,6 +76,36 @@ export const CartProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const getOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await myFetch.get(`${orders_url}/showAllMyOrders`);
+      dispatch({
+        type: GET_ORDERS,
+        payload: { orders: response.data.orders },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const getSingleOrder = async (id) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.get(`${orders_url}/${id}`);
+      dispatch({
+        type: GET_SINGLE_ORDER,
+        payload: { order: response.data.order },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     dispatch({ type: COUNT_CART_TOTALS });
     localStorage.setItem('cart', JSON.stringify(state.cart));
@@ -86,6 +120,8 @@ export const CartProvider = ({ children }) => {
         toggleAmount,
         clearCart,
         createOrder,
+        getOrders,
+        getSingleOrder,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
   GET_ADDRESSES,
+  GET_ME,
   HANDLE_CLOSE_MODAL,
   HANDLE_SHOW_MODAL,
   LOGIN_USER_SUCCESS,
@@ -21,6 +22,7 @@ import {
   ALERT_SUCCESS,
   address_url,
   auth_url,
+  users_url,
 } from '../utils/constants';
 
 const user = localStorage.getItem('user');
@@ -48,6 +50,7 @@ export const UserProvider = ({ children }) => {
       await myFetch.get(`${auth_url}/logout`);
     } catch (error) {}
     removeUserFromLocalStorage();
+    window.location.href = '/login';
   };
   const myFetch = authFetch(logoutUser);
 
@@ -126,6 +129,22 @@ export const UserProvider = ({ children }) => {
     setError(true);
   };
 
+  const getCurrentUser = async () => {
+    setLoading(true);
+    try {
+      const response = await myFetch.get(`${users_url}/showMe`);
+      dispatch({
+        type: GET_ME,
+        payload: { user: response.data.user },
+      });
+      addUserToLocalStorage(response.data.user);
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   const getAddresses = async () => {
     setLoading(true);
     try {
@@ -170,6 +189,41 @@ export const UserProvider = ({ children }) => {
       displayAlert({
         alertType: ALERT_SUCCESS,
         alertText: 'Address updated! Redirecting...',
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const editUser = async (name) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.patch(`${users_url}/updateUser`, { name });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'User updated! Redirecting...',
+      });
+      getCurrentUser();
+      setError(false);
+      addUserToLocalStorage();
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const changePassword = async (values) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.patch(
+        `${users_url}/updateUserPassword`,
+        values
+      );
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Password updated! Redirecting...',
       });
       setError(false);
     } catch (error) {
@@ -228,6 +282,8 @@ export const UserProvider = ({ children }) => {
         handleCloseModal,
         editAddress,
         unsetEdit,
+        editUser,
+        changePassword,
       }}
     >
       {children}

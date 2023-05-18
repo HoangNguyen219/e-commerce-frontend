@@ -2,6 +2,7 @@ import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
   GET_ADDRESSES,
+  GET_ME,
   HANDLE_CLOSE_MODAL,
   HANDLE_SHOW_MODAL,
   LOGIN_USER_SUCCESS,
@@ -86,6 +87,14 @@ const user_reducer = (state, action) => {
     return {
       ...state,
       addresses,
+    };
+  }
+
+  if (action.type === GET_ME) {
+    const { user } = action.payload;
+    return {
+      ...state,
+      user,
     };
   }
 

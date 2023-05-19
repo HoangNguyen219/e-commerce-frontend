@@ -68,6 +68,10 @@ const EditAccountPage = () => {
     </Wrapper>
   );
 };
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  .form {
+    width: auto;
+  }
+`;
 
 export default EditAccountPage;

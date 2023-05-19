@@ -12,7 +12,6 @@ const Order = ({ orders }) => {
       <table>
         <thead>
           <tr>
-            <th></th>
             <th>Processing Status</th>
             <th>Total</th>
             <th>Payment Method</th>
@@ -27,11 +26,12 @@ const Order = ({ orders }) => {
                 order;
               return (
                 <tr key={id}>
-                  <td>{index + 1}</td>
                   <td>
                     <span
                       className={
-                        processStatus === 'pending' || 'canceled' || 'returned'
+                        processStatus === 'pending' ||
+                        processStatus === 'canceled' ||
+                        processStatus === 'returned'
                           ? 'status red'
                           : 'status green'
                       }
@@ -40,7 +40,7 @@ const Order = ({ orders }) => {
                     </span>
                   </td>
                   <td>{formatPrice(total)}</td>
-                  <td>{paymentMethod}</td>
+                  <td className="method">{paymentMethod}</td>
                   <td>{new Date(createdAt).toLocaleString()}</td>
                   <td>
                     <div className="actions">
@@ -65,9 +65,14 @@ const Wrapper = styled.section`
   }
   .green {
     border: solid 1px green;
+    color: green;
   }
   .red {
     border: solid 1px red;
+    color: red;
+  }
+  .method {
+    text-transform: uppercase;
   }
 `;
 

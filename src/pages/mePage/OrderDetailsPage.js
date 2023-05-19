@@ -39,7 +39,10 @@ const OrderDetailsPage = () => {
               {addr.country}
             </p>
           )}
-
+          <h5>
+            Order date:{' '}
+            <span className="date">{new Date(createdAt).toLocaleString()}</span>
+          </h5>
           <hr />
           <div className="info">
             <h5>
@@ -50,7 +53,9 @@ const OrderDetailsPage = () => {
               Processing Status:{' '}
               <span
                 className={
-                  processStatus === 'pending' || 'canceled' || 'returned'
+                  processStatus === 'pending' ||
+                  processStatus === 'canceled' ||
+                  processStatus === 'returned'
                     ? 'status red'
                     : 'status green'
                 }
@@ -63,7 +68,9 @@ const OrderDetailsPage = () => {
               Payment Status:{' '}
               <span
                 className={
-                  paymentStatus === 'unpaid' ? 'status red' : 'status green'
+                  paymentStatus === 'unpaid' || paymentStatus === 'canceled'
+                    ? 'status red'
+                    : 'status green'
                 }
               >
                 {paymentStatus}
@@ -79,41 +86,13 @@ const OrderDetailsPage = () => {
 };
 
 const Wrapper = styled.section`
-  .link-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  .link-btn {
-    background: transparent;
-    border-color: transparent;
-    text-transform: capitalize;
-    padding: 0.25rem 0.5rem;
-    background: var(--clr-primary-5);
-    color: var(--clr-white);
-    border-radius: var(--radius);
-    letter-spacing: var(--spacing);
-    font-weight: 400;
-    cursor: pointer;
-  }
-  .clear-btn {
-    background: var(--clr-black);
-  }
   .total {
     margin-top: 3rem;
     display: grid;
-    @media (min-width: 776px) {
-      grid-template-columns: 1fr auto;
+    row-gap: 2rem;
+    @media (min-width: 1200px) {
+      grid-template-columns: 1fr 400px;
       column-gap: 3rem;
-    }
-    .btn {
-      width: 100%;
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 700;
-    }
-    div {
-      width: 400px;
     }
   }
   .status {
@@ -130,6 +109,10 @@ const Wrapper = styled.section`
   }
   .info {
     margin-top: 1.25rem;
+  }
+  .date {
+    color: var(--clr-primary-5);
+    font-size: 1rem;
   }
 `;
 

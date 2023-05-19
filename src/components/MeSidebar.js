@@ -17,11 +17,18 @@ const MeSideBar = () => {
 const Wrapper = styled.aside`
   display: block;
   box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, 0.1);
+  .text {
+    display: none;
+    @media (min-width: 800px) {
+      display: contents;
+    }
+  }
   .sidebar-container {
     background: var(--clr-white);
     min-height: 100vh;
     height: 100%;
     width: fit-content;
+
     transition: var(--transition);
   }
   .content {

@@ -34,7 +34,7 @@ const CheckoutPage = () => {
   const [values, setValues] = useState({
     cartItems: cart,
     shippingFee: shipping_fee,
-    paymentMethod: 'COD',
+    paymentMethod: 'cod',
   });
   const handleInput = (e) => {
     let { name, value } = e.target;
@@ -113,7 +113,7 @@ const CheckoutPage = () => {
                 <div className="payment-methods">
                   <input
                     type="radio"
-                    value="COD"
+                    value="cod"
                     id="payment-2"
                     name="paymentMethod"
                     defaultChecked
@@ -126,7 +126,7 @@ const CheckoutPage = () => {
                   </p>
                   <input
                     type="radio"
-                    value="PAYPAL"
+                    value="paypal"
                     id="payment-1"
                     name="paymentMethod"
                     onChange={handleInput}

@@ -18,7 +18,7 @@ const NavLinks = () => {
             end
           >
             <span className="icon">{icon}</span>
-            {text}
+            <span className="text">{text}</span>
           </NavLink>
         );
       })}

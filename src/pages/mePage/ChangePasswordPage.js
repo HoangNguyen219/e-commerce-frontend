@@ -101,6 +101,10 @@ const ChangePasswordPage = () => {
     </Wrapper>
   );
 };
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  .form {
+    width: auto;
+  }
+`;
 
 export default ChangePasswordPage;

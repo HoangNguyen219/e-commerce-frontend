@@ -7,6 +7,9 @@ import ProductsPage from './ProductsPage';
 import SingleProductPage from './SingleProductPage';
 import CartPage from './CartPage';
 import LoginPage from './LoginPage';
+import VerifyPage from './Verify';
+import ForgotPassword from './ForgotPassword';
+import ResetPasswordForm from './ResetPassword';
 import {
   MePage,
   AddressPage,
@@ -36,4 +39,7 @@ export {
   AccountPage,
   EditAccountPage,
   ChangePasswordPage,
+  VerifyPage,
+  ForgotPassword,
+  ResetPasswordForm,
 };

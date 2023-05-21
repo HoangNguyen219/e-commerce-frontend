@@ -18,6 +18,9 @@ import {
   AccountPage,
   ChangePasswordPage,
   EditAccountPage,
+  VerifyPage,
+  ForgotPassword,
+  ResetPasswordForm,
 } from './pages';
 
 import { ToastContainer } from 'react-toastify';
@@ -35,6 +38,10 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/user/verify-email" element={<VerifyPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/user/reset-password" element={<ResetPasswordForm />} />
+
         <Route path="/products/:id" element={<SingleProductPage />} />
         <Route
           path="/checkout"

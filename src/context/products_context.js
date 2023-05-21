@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import authFetch from '../utils/authFetch';
 import {
   SIDEBAR_CLOSE,
@@ -82,10 +82,6 @@ export const ProductsProvider = ({ children }) => {
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const getProducts = async () => {
     setLoading(true);
@@ -173,6 +169,7 @@ export const ProductsProvider = ({ children }) => {
         getProducts,
         handleChange,
         createReview,
+        fetchData,
       }}
     >
       {children}

@@ -50,7 +50,6 @@ export const UserProvider = ({ children }) => {
       await myFetch.get(`${auth_url}/logout`);
     } catch (error) {}
     removeUserFromLocalStorage();
-    window.location.href = '/login';
   };
   const myFetch = authFetch(logoutUser);
 
@@ -121,7 +120,8 @@ export const UserProvider = ({ children }) => {
   };
 
   const handleError = (error) => {
-    const msg = error.response.data.msg;
+    const msg =
+      error.response.data.msg || 'Something went wrong, please try again';
     displayAlert({
       alertType: ALERT_DANGER,
       alertText: msg,
@@ -262,6 +262,53 @@ export const UserProvider = ({ children }) => {
     dispatch({ type: UNSET_EDIT });
   };
 
+  const verifyToken = async ({ verificationToken, email }) => {
+    setLoading(true);
+    try {
+      const { data } = await myFetch.post(`${auth_url}/verify-email`, {
+        verificationToken,
+        email,
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const forgotPassword = async (email) => {
+    setLoading(true);
+    try {
+      const { data } = await myFetch.post(`${auth_url}/forgot-password`, {
+        email,
+      });
+      displayAlert({ alertText: data.msg, alertType: ALERT_SUCCESS });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const resetPassword = async ({ password, token, email }) => {
+    setLoading(true);
+    try {
+      const { data } = await myFetch.post(`${auth_url}/reset-password`, {
+        password,
+        token,
+        email,
+      });
+      displayAlert({
+        alertText: `Success, redirecting to login page shortly`,
+        alertType: ALERT_SUCCESS,
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -284,6 +331,9 @@ export const UserProvider = ({ children }) => {
         unsetEdit,
         editUser,
         changePassword,
+        verifyToken,
+        forgotPassword,
+        resetPassword,
       }}
     >
       {children}

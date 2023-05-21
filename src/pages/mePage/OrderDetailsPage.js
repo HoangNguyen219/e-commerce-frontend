@@ -9,7 +9,6 @@ const OrderDetailsPage = () => {
   const {
     shippingFee,
     subtotal,
-    total,
     orderItems,
     processStatus,
     paymentStatus,

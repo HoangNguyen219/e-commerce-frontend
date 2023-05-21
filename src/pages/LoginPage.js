@@ -4,6 +4,7 @@ import { PageHero, FormRow, Alert, Loading } from '../components';
 import { useUserContext } from '../context/user_context';
 import { useNavigate } from 'react-router-dom';
 import { ALERT_DANGER } from '../utils/constants';
+import { Link } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -47,6 +48,7 @@ const LoginPage = () => {
         alertText: 'Passwords do not match',
         alertType: ALERT_DANGER,
       });
+      return;
     }
 
     const currentUser = { name, email, password, confirmPassword };
@@ -123,6 +125,14 @@ const LoginPage = () => {
               {isMember ? 'Register' : 'Login'}
             </button>
           </p>
+          {isMember && (
+            <p>
+              Forgot your password?{' '}
+              <Link to="/forgot-password" className="reset-link member-btn">
+                Reset Password
+              </Link>
+            </p>
+          )}
         </form>
       </Wrapper>
     </main>
@@ -151,6 +161,10 @@ const Wrapper = styled.section`
     color: var(--clr-primary-5);
     cursor: pointer;
     letter-spacing: var(--spacing);
+  }
+  .reset-link {
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
   }
 `;
 

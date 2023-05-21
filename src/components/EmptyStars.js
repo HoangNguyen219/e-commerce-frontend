@@ -4,22 +4,22 @@ import styled from 'styled-components';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 
 const EmptyStars = ({ handleChange, rating }) => {
-  const [tempStars, setTempStars] = useState(0);
+  const [tempStars, setTempStars] = useState(rating);
 
   return (
     <Wrapper>
       <div className="stars">
         {[...Array(5)].map((_, index) => {
-          const isHovered = index < tempStars;
+          const isClicked = index < tempStars;
           return (
             <span
               key={index}
-              onMouseEnter={() => {
+              onClick={() => {
                 setTempStars(index + 1);
                 handleChange('rating', index + 1);
               }}
             >
-              {isHovered ? <BsStarFill /> : <BsStar />}
+              {isClicked ? <BsStarFill /> : <BsStar />}
             </span>
           );
         })}

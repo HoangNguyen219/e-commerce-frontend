@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import EmptyStars from './EmptyStars';
 import { useUserContext } from '../context/user_context';
 import { useProductsContext } from '../context/products_context';
 import Alert from './Alert';
-import { ALERT_DANGER } from '../utils/constants';
+import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 
-const FormReview = () => {
-  const { displayAlert, alert } = useUserContext();
-  const {
-    product: { id },
-    createReview,
-  } = useProductsContext();
+const FormReview = ({ rating, comment, id, setShowEditForm }) => {
+  const { displayAlert, alert, isLoading } = useUserContext();
+  const { createReview, updateReview } = useProductsContext();
 
-  const [review, setReview] = useState({ productId: id });
+  const [review, setReview] = useState({ comment, rating });
 
   const handleChange = (name, value) => {
     setReview((review) => {
@@ -33,14 +30,25 @@ const FormReview = () => {
       });
       return;
     }
+    if (id) {
+      return updateReview({ review, id });
+    }
     createReview(review);
   };
 
+  useEffect(() => {
+    if (id && alert.alertType === ALERT_SUCCESS) {
+      setTimeout(() => {
+        setShowEditForm(false);
+      }, 2000);
+    }
+  }, [alert.alertType === ALERT_SUCCESS]);
+
   return (
     <div className="form">
-      <h5>Give your Review:</h5>
+      <h5>{id ? 'Edit' : 'Give'} your Review:</h5>
       <div className="rating">
-        <EmptyStars handleChange={handleChange} rating={review.rating} />
+        <EmptyStars handleChange={handleChange} rating={rating} />
       </div>
       <textarea
         className="form-textarea form-row"
@@ -52,7 +60,7 @@ const FormReview = () => {
         <Alert alertText={alert.alertText} alertType={alert.alertType} />
       )}
 
-      <button className="btn" onClick={handleSubmit}>
+      <button className="btn" onClick={handleSubmit} disabled={isLoading}>
         Submit
       </button>
     </div>

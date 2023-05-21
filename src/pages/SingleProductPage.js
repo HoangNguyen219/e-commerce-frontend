@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useProductsContext } from '../context/products_context';
 import { formatPrice } from '../utils/helpers';
+import { useUserContext } from '../context/user_context';
 import {
   Loading,
   Error,
@@ -15,24 +16,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const SingleProductPage = () => {
   const { id } = useParams();
-  const {
-    product_loading: loading,
-    product_error: error,
-    product,
-    fetchSingleProduct,
-  } = useProductsContext();
+  const { product, fetchSingleProduct } = useProductsContext();
+  const { isLoading, isError } = useUserContext();
 
   useEffect(() => {
     fetchSingleProduct(id);
   }, [id]);
-
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    return <Error />;
-  }
-
   const {
     name,
     price,
@@ -63,6 +52,8 @@ const SingleProductPage = () => {
         <Link to="/products" className="btn">
           back to products
         </Link>
+        {isLoading && <Loading />}
+        {isError && <Error />}
         <div className="product-center">
           <ProductImages images={images} />
           <section className="content">

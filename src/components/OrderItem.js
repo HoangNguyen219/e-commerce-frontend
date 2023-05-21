@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
 import { WHITE, WHITE_DISPLAY } from '../utils/constants';
+import { Link } from 'react-router-dom';
 
 const OrderItem = ({ item }) => {
   console.log(item);
@@ -10,7 +11,7 @@ const OrderItem = ({ item }) => {
     price,
     amount,
     itemTotal,
-    productId: { name, primaryImage },
+    productId: { name, primaryImage, id: productId },
   } = item;
   const displayColor = color === WHITE ? WHITE_DISPLAY : color;
 
@@ -19,7 +20,9 @@ const OrderItem = ({ item }) => {
       <div className="title">
         <img src={primaryImage} alt={name} />
         <div>
-          <h5 className="name">{name}</h5>
+          <Link to={`/products/${productId}`}>
+            <h5 className="name">{name}</h5>
+          </Link>
           <p className="color">
             color: <span style={{ background: displayColor }}></span>
           </p>
@@ -85,6 +88,10 @@ const Wrapper = styled.article`
     }
   }
   .price-small {
+    color: var(--clr-primary-5);
+  }
+
+  .name {
     color: var(--clr-primary-5);
   }
 

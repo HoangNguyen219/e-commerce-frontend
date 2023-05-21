@@ -126,13 +126,39 @@ export const ProductsProvider = ({ children }) => {
 
   const createReview = async (review) => {
     setLoading(true);
+    const productId = state.product.id;
     try {
-      const response = await myFetch.post(reviews_url, review);
+      const response = await myFetch.post(reviews_url, {
+        ...review,
+        productId,
+      });
       displayAlert({
         alertType: ALERT_SUCCESS,
-        alertText: 'Rating added!',
+        alertText: 'Review added!',
       });
-      fetchSingleProduct(review.productId);
+      setTimeout(() => {
+        fetchSingleProduct(productId);
+      }, 2000);
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const updateReview = async ({ review, id }) => {
+    setLoading(true);
+    const productId = state.product.id;
+    try {
+      const response = await myFetch.patch(`${reviews_url}/${id}`, {
+        ...review,
+        productId,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Review updated!',
+      });
+      fetchSingleProduct(productId);
       setError(false);
     } catch (error) {
       handleError(error);
@@ -156,6 +182,19 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: CLEAR_FILTERS });
   };
 
+  const deleteReview = async (id) => {
+    setLoading(true);
+    try {
+      await myFetch.delete(`/${reviews_url}/${id}`);
+      setError(false);
+      fetchSingleProduct(state.product.id);
+    } catch (error) {
+      if (error.response.status === 401) return;
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -170,6 +209,8 @@ export const ProductsProvider = ({ children }) => {
         handleChange,
         createReview,
         fetchData,
+        deleteReview,
+        updateReview,
       }}
     >
       {children}

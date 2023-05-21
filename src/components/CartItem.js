@@ -7,10 +7,11 @@ import { DECREASE, INCREASE, WHITE, WHITE_DISPLAY } from '../utils/constants';
 import AmountButtons from './AmountButtons';
 import Modal from './Modal';
 import { FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
-const CartItem = ({ id, image, name, color, price, amount }) => {
+const CartItem = ({ id, image, name, color, price, amount, productId }) => {
   const { removeItem, toggleAmount } = useCartContext();
-  const { showModal, handleCloseModal, deleteFn, handleShowModal } =
+  const { showModal, handleCloseModal, handleShowModal, deleteFn } =
     useUserContext();
 
   const increase = () => {
@@ -27,7 +28,9 @@ const CartItem = ({ id, image, name, color, price, amount }) => {
       <div className="title">
         <img src={image} alt={name} />
         <div>
-          <h5 className="name">{name}</h5>
+          <Link to={`/products/${productId}`}>
+            <h5 className="name">{name}</h5>
+          </Link>
           <p className="color">
             color: <span style={{ background: displayColor }}></span>
           </p>
@@ -47,7 +50,9 @@ const CartItem = ({ id, image, name, color, price, amount }) => {
       {showModal && (
         <Modal
           handleCloseModal={handleCloseModal}
-          handleDeleteItem={() => removeItem(id)}
+          handleDeleteItem={() => {
+            deleteFn.callback(deleteFn.index);
+          }}
         />
       )}
     </Wrapper>
@@ -86,6 +91,9 @@ const Wrapper = styled.article`
   h5 {
     font-size: 0.75rem;
     margin-bottom: 0;
+  }
+  .name {
+    color: var(--clr-primary-5);
   }
   .color {
     color: var(--clr-grey-5);

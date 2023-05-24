@@ -54,6 +54,7 @@ const FormReview = ({ rating, comment, id, setShowEditForm }) => {
         className="form-textarea form-row"
         name="comment"
         value={review.comment}
+        disabled={isLoading}
         onChange={(e) => handleChange(e.target.name, e.target.value)}
       />
       {alert.showAlert && (

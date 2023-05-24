@@ -10,6 +10,7 @@ import {
   CLEAR_FILTERS,
   GET_DATA_SUCCESS,
   HANDLE_CHANGE,
+  CHANGE_PAGE,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -193,6 +194,10 @@ export const ProductsProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -209,6 +214,7 @@ export const ProductsProvider = ({ children }) => {
         fetchData,
         deleteReview,
         updateReview,
+        changePage,
       }}
     >
       {children}

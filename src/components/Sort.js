@@ -5,8 +5,14 @@ import { BsFillGridFill, BsList } from 'react-icons/bs';
 import { sorts } from '../utils/constants';
 
 const Sort = () => {
-  const { products, grid_view, setGridView, setListView, sort, handleChange } =
-    useProductsContext();
+  const {
+    totalProducts,
+    grid_view,
+    setGridView,
+    setListView,
+    sort,
+    handleChange,
+  } = useProductsContext();
   return (
     <Wrapper>
       <div className="btn-container">
@@ -25,7 +31,7 @@ const Sort = () => {
           <BsList />
         </button>
       </div>
-      <p>{products.length} products found</p>
+      <p>{totalProducts} products found</p>
       <hr />
       <form>
         <label htmlFor="sort">sort by</label>

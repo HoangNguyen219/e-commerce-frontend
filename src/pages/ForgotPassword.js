@@ -35,6 +35,7 @@ const ForgotPassword = () => {
           <FormRow
             type="email"
             name="email"
+            disabled={isLoading}
             value={email}
             handleChange={handleChange}
           />

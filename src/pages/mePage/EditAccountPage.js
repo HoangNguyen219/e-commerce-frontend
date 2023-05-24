@@ -47,6 +47,7 @@ const EditAccountPage = () => {
             type="text"
             name="name"
             labelText="name"
+            disabled={isLoading}
             value={name}
             handleChange={handleInput}
           />

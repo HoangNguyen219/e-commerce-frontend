@@ -6,6 +6,7 @@ const FormRowSelect = ({
   value,
   handleChange,
   list,
+  disabled,
 }) => {
   return (
     <div className={`${className} form-row `}>
@@ -17,6 +18,7 @@ const FormRowSelect = ({
       <select
         id={name}
         name={name}
+        {...(disabled ? { disabled: true } : {})}
         value={value}
         onChange={handleChange}
         className="form-select"

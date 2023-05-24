@@ -170,7 +170,7 @@ p {
 .loading {
   width: 6rem;
   height: 6rem;
-  margin: 0 auto;
+  margin: 1rem auto;
   border-radius: 50%;
   border: 4px solid #ccc;
   border-top-color: var(--clr-primary-5);
@@ -325,10 +325,9 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
+*:disabled {
   cursor: not-allowed;
 }
-
 select, option {
   text-transform: capitalize;
 }
@@ -447,4 +446,8 @@ label {
   position: relative;
   bottom: 3px;
   text-transform: capitalize;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--clr-primary-5);
 }

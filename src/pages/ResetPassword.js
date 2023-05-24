@@ -55,6 +55,7 @@ const ResetPasswordForm = () => {
           <FormRow
             type="password"
             name="password"
+            disabled={isLoading}
             value={password}
             handleChange={handleChange}
           />

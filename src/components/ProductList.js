@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-import GridView from './GridView';
 import { useProductsContext } from '../context/products_context';
 import { useUserContext } from '../context/user_context';
-import ListView from './ListView';
-import Loading from './Loading';
-import { Error } from '.';
+import { Error, Loading, ListView, GridView, PageBtnContainer } from '.';
 
 const ProductList = () => {
   const {
@@ -19,6 +16,9 @@ const ProductList = () => {
     shipping,
     sort,
     page,
+    totatotalProducts,
+    numOfPages,
+    changePage,
   } = useProductsContext();
 
   const { isLoading, isError } = useUserContext();
@@ -34,17 +34,29 @@ const ProductList = () => {
     return <Error />;
   }
 
-  if (products.length < 1) {
+  if (totatotalProducts < 1) {
     return (
       <h5 style={{ textTransform: 'none' }}>
         Sorry, no products matched your search...
       </h5>
     );
   }
-  if (grid_view === false) {
-    return <ListView products={products} />;
-  }
-  return <GridView products={products}></GridView>;
+  return (
+    <>
+      {grid_view === false ? (
+        <ListView products={products} />
+      ) : (
+        <GridView products={products}></GridView>
+      )}
+      {numOfPages > 1 && (
+        <PageBtnContainer
+          numOfPages={numOfPages}
+          page={page}
+          changePage={changePage}
+        />
+      )}
+    </>
+  );
 };
 
 export default ProductList;

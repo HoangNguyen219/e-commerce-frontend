@@ -56,6 +56,7 @@ const ChangePasswordPage = () => {
           <FormRow
             type="password"
             name="oldPassword"
+            disabled={isLoading}
             labelText="password"
             value={values.oldPassword}
             handleChange={handleInput}
@@ -68,6 +69,7 @@ const ChangePasswordPage = () => {
             type="password"
             name="newPassword"
             labelText="new Password"
+            disabled={isLoading}
             value={values.newPassword}
             handleChange={handleInput}
           />
@@ -79,6 +81,7 @@ const ChangePasswordPage = () => {
             type="password"
             name="confirmPassword"
             labelText="confirm Password"
+            disabled={isLoading}
             value={values.confirmPassword}
             handleChange={handleInput}
           />

@@ -84,6 +84,7 @@ const LoginPage = () => {
             <FormRow
               type="text"
               name="name"
+              disabled={isLoading}
               value={values.name}
               handleChange={handleChange}
             />
@@ -93,6 +94,7 @@ const LoginPage = () => {
           <FormRow
             type="email"
             name="email"
+            disabled={isLoading}
             value={values.email}
             handleChange={handleChange}
           />
@@ -100,6 +102,7 @@ const LoginPage = () => {
           <FormRow
             type="password"
             name="password"
+            disabled={isLoading}
             value={values.password}
             handleChange={handleChange}
           />
@@ -109,6 +112,7 @@ const LoginPage = () => {
               type="password"
               name="confirmPassword"
               labelText="confirm password"
+              disabled={isLoading}
               value={values.confirmPassword}
               handleChange={handleChange}
             />
@@ -121,7 +125,12 @@ const LoginPage = () => {
           </button>
           <p>
             {isMember ? 'Not a member yet? ' : 'Already a member? '}
-            <button type="button" onClick={toggleMember} className="member-btn">
+            <button
+              type="button"
+              onClick={toggleMember}
+              disabled={isLoading}
+              className="member-btn"
+            >
               {isMember ? 'Register' : 'Login'}
             </button>
           </p>

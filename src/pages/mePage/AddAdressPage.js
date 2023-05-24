@@ -23,6 +23,7 @@ const AddAdressPage = () => {
   const [countryList, setCountryList] = useState([]);
   const [stateList, setStateList] = useState([]);
   const [cityList, setCityList] = useState([]);
+  const [countRender, setCountRender] = useState(0);
 
   useEffect(() => {
     setCountryList(
@@ -31,39 +32,51 @@ const AddAdressPage = () => {
         return { name, id: isoCode };
       })
     );
-    setValues((values) => {
-      return { ...values, country: 'AF', state: 'BDS', city: 'Ashkāsham' };
-    });
+    if (!isEditing) {
+      setValues((values) => {
+        return {
+          ...values,
+          countryCode: 'AF',
+          stateCode: 'BDS',
+          city: 'Ashkāsham',
+        };
+      });
+    }
   }, []);
 
   useEffect(() => {
     setStateList(
-      State.getStatesOfCountry(values.country).map((state) => {
+      State.getStatesOfCountry(values.countryCode).map((state) => {
         const { name, isoCode } = state;
         return { name, id: isoCode };
       })
     );
-  }, [values.country]);
+  }, [values.countryCode]);
 
   useEffect(() => {
     setCityList(
-      City.getCitiesOfState(values.country, values.state).map((city) => {
-        const { name } = city;
-        return { name, id: name };
-      })
+      City.getCitiesOfState(values.countryCode, values.stateCode).map(
+        (city) => {
+          const { name } = city;
+          return { name, id: name };
+        }
+      )
     );
-  }, [values.state]);
+  }, [values.stateCode]);
 
   useEffect(() => {
-    if (stateList.length > 0) {
+    setCountRender((countRender) => countRender + 1);
+    if (countRender > 2 && stateList.length > 0) {
       setValues((values) => {
-        return { ...values, state: stateList[0].id };
+        return { ...values, stateCode: stateList[0].id };
       });
     }
   }, [stateList]);
 
   useEffect(() => {
-    if (cityList.length > 0) {
+    setCountRender((countRender) => countRender + 1);
+
+    if (countRender > 2 && cityList.length > 0) {
       setValues((values) => {
         return { ...values, city: cityList[0].id };
       });
@@ -82,7 +95,8 @@ const AddAdressPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let { name, mobile, country, state, city, address, isDefault } = values;
+    const { name, mobile, countryCode, stateCode, city, address, isDefault } =
+      values;
     if (!name || !mobile || !address) {
       displayAlert({
         alertType: ALERT_DANGER,
@@ -98,10 +112,22 @@ const AddAdressPage = () => {
       return;
     }
 
-    country = Country.getCountryByCode(country).name;
-    state = State.getStateByCode(state).name;
+    const country = Country.getCountryByCode(countryCode).name;
+    const state = State.getStateByCodeAndCountry(stateCode, countryCode)
+      ? State.getStateByCodeAndCountry(stateCode, countryCode).name
+      : stateCode;
 
-    const data = { name, mobile, country, state, city, address, isDefault };
+    const data = {
+      name,
+      mobile,
+      country,
+      countryCode,
+      state,
+      stateCode,
+      city,
+      address,
+      isDefault,
+    };
 
     if (isEditing) {
       return editAddress(data);
@@ -128,6 +154,7 @@ const AddAdressPage = () => {
             type="text"
             name="name"
             labelText="name"
+            disabled={isLoading}
             value={values.name}
             handleChange={handleInput}
           />
@@ -136,38 +163,67 @@ const AddAdressPage = () => {
             labelText="Phone number"
             type="text"
             name="mobile"
+            disabled={isLoading}
             value={values.mobile}
             handleChange={handleInput}
           />
           {/* country */}
           <FormRowSelect
             labelText="country"
-            name="country"
-            value={values.country}
+            name="countryCode"
+            disabled={isLoading}
+            value={values.countryCode}
             handleChange={handleInput}
             list={countryList}
           />
           {/* state */}
-          <FormRowSelect
-            labelText="state"
-            name="state"
-            value={values.state}
-            handleChange={handleInput}
-            list={stateList}
-          />
+          {stateList.length > 0 ? (
+            <FormRowSelect
+              labelText="state"
+              name="stateCode"
+              disabled={isLoading}
+              value={values.stateCode}
+              handleChange={handleInput}
+              list={stateList}
+            />
+          ) : (
+            <FormRow
+              type="text"
+              name="stateCode"
+              labelText="state"
+              disabled={isLoading}
+              value={values.stateCode}
+              handleChange={handleInput}
+            />
+          )}
+
           {/* city */}
-          <FormRowSelect
-            labelText="city"
-            name="city"
-            value={values.city}
-            handleChange={handleInput}
-            list={cityList}
-          />
+          {cityList.length > 0 ? (
+            <FormRowSelect
+              labelText="city"
+              name="city"
+              disabled={isLoading}
+              value={values.city}
+              handleChange={handleInput}
+              list={cityList}
+            />
+          ) : (
+            <FormRow
+              type="text"
+              name="city"
+              labelText="city"
+              disabled={isLoading}
+              value={values.city}
+              handleChange={handleInput}
+            />
+          )}
+
           {/* address */}
           <FormRow
             type="text"
             name="address"
             labelText="address"
+            disabled={isLoading}
             value={values.address}
             handleChange={handleInput}
           />
@@ -179,6 +235,7 @@ const AddAdressPage = () => {
             type="checkbox"
             name="isDefault"
             id="isDefault"
+            disabled={isLoading}
             onChange={handleInput}
             checked={values.isDefault}
           />

@@ -8,6 +8,7 @@ import {
   SET_LISTVIEW,
   CLEAR_FILTERS,
   HANDLE_CHANGE,
+  CHANGE_PAGE,
 } from '../actions';
 
 const products_reducer = (state, action) => {
@@ -16,6 +17,10 @@ const products_reducer = (state, action) => {
   }
   if (action.type === SIDEBAR_CLOSE) {
     return { ...state, isSidebarOpen: false };
+  }
+
+  if (action.type === CHANGE_PAGE) {
+    return { ...state, page: action.payload.page };
   }
 
   if (action.type === GET_DATA_SUCCESS) {

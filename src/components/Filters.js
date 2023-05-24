@@ -13,7 +13,6 @@ const Filters = () => {
     color,
     min_price,
     max_price,
-    shipping,
     products_loading,
     handleChange,
     clearFilters,
@@ -183,18 +182,6 @@ const Filters = () => {
             />
           </div>
           {/* end of price */}
-          {/* shipping */}
-          <div className="form-control shipping">
-            <label htmlFor="shipping">free shipping</label>
-            <input
-              type="checkbox"
-              name="shipping"
-              id="shipping"
-              onChange={handleSearch}
-              checked={shipping}
-            />
-          </div>
-          {/* end of shipping */}
         </form>
         <button
           type="button"

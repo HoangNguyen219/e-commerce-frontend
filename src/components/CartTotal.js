@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
 
-const CartTotal = ({ total, shipping_fee }) => {
+const CartTotal = ({ total, shippingFee }) => {
   return (
     <Wrapper>
       <article>
@@ -10,11 +10,11 @@ const CartTotal = ({ total, shipping_fee }) => {
           subtotal: <span>{formatPrice(total)}</span>
         </h5>
         <p>
-          shipping fee: <span>{formatPrice(shipping_fee)}</span>
+          shipping fee: <span>{formatPrice(shippingFee)}</span>
         </p>
         <hr />
         <h4>
-          order total: <span>{formatPrice(total + shipping_fee)}</span>
+          order total: <span>{formatPrice(total + shippingFee)}</span>
         </h4>
       </article>
     </Wrapper>

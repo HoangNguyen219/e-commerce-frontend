@@ -27,6 +27,7 @@ import Address from './Address';
 import CartColumns from './CartColumns';
 import CartItem from './CartItem';
 import OrderItem from './OrderItem';
+import TopBar from './TopBar';
 
 export {
   Navbar,
@@ -58,4 +59,5 @@ export {
   CartColumns,
   CartItem,
   OrderItem,
+  TopBar,
 };

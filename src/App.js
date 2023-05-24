@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, SideBar, Footer } from './components';
+import { Navbar, SideBar, Footer, TopBar } from './components';
 import {
   HomePage,
   AboutPage,
@@ -30,6 +30,7 @@ function App() {
   return (
     <Router>
       <ToastContainer />
+      <TopBar />
       <Navbar />
       <SideBar />
       <Routes>

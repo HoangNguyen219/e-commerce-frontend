@@ -53,46 +53,54 @@ const SingleProductPage = () => {
           back to products
         </Link>
         {isLoading && <Loading />}
-        {isError && <Error />}
-        <div className="product-center">
-          <ProductImages images={images} />
-          <section className="content">
-            <h2>{name}</h2>
-            <div className="stars">
-              <Stars stars={stars} />
-              <p className="reviews">({numOfReviews} customer reviews)</p>
+        {isError ? (
+          <Error />
+        ) : (
+          <>
+            <div className="product-center">
+              <ProductImages images={images} />
+              <section className="content">
+                <h2>{name}</h2>
+                <div className="stars">
+                  <Stars stars={stars} />
+                  <p className="reviews">({numOfReviews} customer reviews)</p>
+                </div>
+                <h5 className="price">{formatPrice(price)}</h5>
+                <p className="desc">{description}</p>
+                <p className="info">
+                  <span>Available : </span>
+                  {stock > 0 ? 'In stock' : 'out of stock'}
+                </p>
+                <p className="info">
+                  <span>SKU :</span>
+                  {sku}
+                </p>
+                <p className="info">
+                  <span>Company :</span>
+                  {company && company.name}
+                </p>
+                <p className="info">
+                  <span>Category :</span>
+                  {category && category.name}
+                </p>
+                <hr />
+                {stock > 0 && <AddToCart product={product} />}
+              </section>
             </div>
-            <h5 className="price">{formatPrice(price)}</h5>
-            <p className="desc">{description}</p>
-            <p className="info">
-              <span>Available : </span>
-              {stock > 0 ? 'In stock' : 'out of stock'}
-            </p>
-            <p className="info">
-              <span>SKU :</span>
-              {sku}
-            </p>
-            <p className="info">
-              <span>Company :</span>
-              {company && company.name}
-            </p>
-            <p className="info">
-              <span>Category :</span>
-              {category && category.name}
-            </p>
-            <hr />
-            {stock > 0 && <AddToCart product={product} />}
-          </section>
-        </div>
-      </div>
-      <hr className="section-center" />
+            <hr className="section-center hr" />
 
-      {reviews && <Review reviews={reviews} />}
+            {reviews && <Review reviews={reviews} />}
+          </>
+        )}
+      </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.main`
+  .hr {
+    margin: 3rem auto;
+  }
   .product-center {
     display: grid;
     gap: 4rem;

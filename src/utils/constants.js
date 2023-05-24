@@ -101,5 +101,6 @@ export const reviews_url = 'reviews';
 export const address_url = 'addresses';
 export const orders_url = 'orders';
 export const users_url = 'users';
+export const config_url = 'config';
 
 export const baseUrl = '/api/v1';

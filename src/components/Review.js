@@ -36,14 +36,18 @@ const Review = ({ reviews }) => {
           message="Deleting this item?"
         />
       )}
-      <div className="section section-center">
+      <div className="section-center">
         <h3>Product rating</h3>
 
         {isDisplayForm && <FormReview />}
 
         {reviews.map((review) => {
           const { userId: user, createdAt, comment, rating, id } = review;
-          const isOwner = user.id === userLogin.id;
+          let isOwner = false;
+          if (userLogin) {
+            isOwner = user.id === userLogin.id;
+          }
+
           return (
             <div className="reviews-submitted" key={id}>
               <div className="reviewer">

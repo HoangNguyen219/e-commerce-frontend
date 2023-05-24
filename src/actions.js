@@ -45,5 +45,9 @@ export const UNSET_EDIT = 'UNSET_EDIT';
 
 export const GET_ORDERS = 'GET_ORDERS';
 export const GET_SINGLE_ORDER = 'GET_SINGLE_ORDER';
+export const GET_CONFIGS = 'GET_CONFIGS';
 
 export const GET_ME = 'GET_ME';
+export const SET_FREE_SHIPPING_FEE = 'SET_FREE_SHIPPING_FEE';
+
+export const SET_CART = 'SET_CART';

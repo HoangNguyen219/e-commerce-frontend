@@ -72,6 +72,7 @@ const AddToCart = ({ product }) => {
         <button
           className="btn"
           onClick={() => addToCart(id, mainColor, amount, product)}
+          disabled={stock ? null : true}
         >
           add to cart
         </button>

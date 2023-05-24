@@ -42,7 +42,6 @@ const initialState = {
   min_price: 0,
   max_price: 0,
   price: 0,
-  shipping: false,
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -85,10 +84,9 @@ export const ProductsProvider = ({ children }) => {
 
   const getProducts = async () => {
     setLoading(true);
-    const { page, text, companyId, categoryId, color, price, shipping, sort } =
-      state;
+    const { page, text, companyId, categoryId, color, price, sort } = state;
 
-    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&sort=${sort}`;
+    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&sort=${sort}`;
     try {
       const { data } = await myFetch.get(url);
       const { products, totalProducts, numOfPages } = data;

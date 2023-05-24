@@ -2,50 +2,58 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   COUNT_CART_TOTALS,
+  GET_CONFIGS,
   GET_ORDERS,
   GET_SINGLE_ORDER,
   REMOVE_CART_ITEM,
+  SET_CART,
+  SET_FREE_SHIPPING_FEE,
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
 import { DECREASE, INCREASE } from '../utils/constants';
 
 const cart_reducer = (state, action) => {
   if (action.type === ADD_TO_CART) {
-    const { id, color, amount, product } = action.payload;
-    const { stock: max } = product.colorStocks.find((cs) => cs.color === color);
-    const tempItem = state.cart.find((item) => item.id === id + color);
+    const { id, color, amount } = action.payload;
+    const tempItem = state.localCart.find((item) => item.id === id + color);
     if (tempItem) {
-      state.cart = state.cart.filter((item) => item.id !== tempItem.id);
+      state.localCart = state.localCart.filter(
+        (item) => item.id !== tempItem.id
+      );
       let newAmount = tempItem.amount + amount;
       if (newAmount > tempItem.max) {
         newAmount = tempItem.max;
       }
       tempItem.amount = newAmount;
-      return { ...state, cart: [tempItem, ...state.cart] };
+      return {
+        ...state,
+        localCart: [tempItem, ...state.localCart],
+      };
     } else {
-      const newItem = {
+      const newLocalItem = {
         id: id + color,
         productId: id,
-        name: product.name,
-        color: color,
         amount: amount,
-        image: product.primaryImage,
-        price: product.price,
-        max: max,
+        color: color,
       };
-      return { ...state, cart: [...state.cart, newItem] };
+      return {
+        ...state,
+        localCart: [...state.localCart, newLocalItem],
+      };
     }
   }
   if (action.type === REMOVE_CART_ITEM) {
-    const tempCart = state.cart.filter((item) => item.id !== action.payload);
-    return { ...state, cart: tempCart };
+    const tempCart = state.localCart.filter(
+      (item) => item.id !== action.payload
+    );
+    return { ...state, localCart: tempCart };
   }
   if (action.type === CLEAR_CART) {
-    return { ...state, cart: [] };
+    return { ...state, localCart: [] };
   }
   if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
     const { id, value } = action.payload;
-    const tempCart = state.cart.map((item) => {
+    const tempCart = state.localCart.map((item) => {
       if (item.id === id) {
         if (value === INCREASE) {
           let newAmount =
@@ -60,7 +68,7 @@ const cart_reducer = (state, action) => {
         return item;
       }
     });
-    return { ...state, cart: tempCart };
+    return { ...state, localCart: tempCart };
   }
 
   if (action.type === COUNT_CART_TOTALS) {
@@ -79,6 +87,11 @@ const cart_reducer = (state, action) => {
     return { ...state, total_items, total };
   }
 
+  if (action.type === SET_CART) {
+    const { data } = action.payload;
+    return { ...state, cart: data ? [...data] : [] };
+  }
+
   if (action.type === GET_ORDERS) {
     const { orders } = action.payload;
     return {
@@ -92,6 +105,24 @@ const cart_reducer = (state, action) => {
     return {
       ...state,
       order,
+    };
+  }
+
+  if (action.type === GET_CONFIGS) {
+    const { configs } = action.payload;
+    const getValueByName = (name) =>
+      configs.find((config) => config.name === name && config.status)?.value;
+    return {
+      ...state,
+      shippingFee: getValueByName('ShippingFee') || 0,
+      minFreeShippingAmount: getValueByName('MinFreeShippingAmount') || 0,
+    };
+  }
+
+  if (action.type === SET_FREE_SHIPPING_FEE) {
+    return {
+      ...state,
+      shippingFee: 0,
     };
   }
 

@@ -4,33 +4,42 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   COUNT_CART_TOTALS,
+  GET_CONFIGS,
   GET_ORDERS,
   GET_SINGLE_ORDER,
   REMOVE_CART_ITEM,
+  SET_CART,
+  SET_FREE_SHIPPING_FEE,
   TOGGLE_CART_ITEM_AMOUNT,
 } from '../actions';
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from './user_context';
 import { capitalize } from '../utils/helpers';
-import { ALERT_SUCCESS, orders_url } from '../utils/constants';
+import {
+  ALERT_SUCCESS,
+  config_url,
+  orders_url,
+  products_url,
+} from '../utils/constants';
 import authFetch from '../utils/authFetch';
 
 const getLocalStorage = () => {
-  let cart = localStorage.getItem('cart');
-  if (cart) {
-    return JSON.parse(cart);
+  let localCart = localStorage.getItem('localCart');
+  if (localCart) {
+    return JSON.parse(localCart);
   } else {
     return [];
   }
 };
 
 const initialState = {
-  cart: getLocalStorage(),
-  total_items: 0,
+  localCart: getLocalStorage(),
+  cart: [],
   total: 0,
-  shipping_fee: 534,
+  shippingFee: 0,
+  minFreeShippingAmount: 0,
+  configs: [],
   orders: [],
   order: {},
 };
@@ -59,6 +68,52 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     dispatch({ type: CLEAR_CART });
   };
+
+  const setFreeShippingFee = () => {
+    dispatch({ type: SET_FREE_SHIPPING_FEE });
+  };
+
+  const setCart = async () => {
+    const dataPromises = state.localCart.map((item) =>
+      myFetch.get(`${products_url}/${item.productId}`).then(({ data }) => {
+        const { price, primaryImage: image, name } = data.product;
+        const { stock: max } = data.product.colorStocks.find(
+          (cs) => cs.color === item.color
+        );
+        return { ...item, price, image, name, max };
+      })
+    );
+    const data = await Promise.all(dataPromises);
+    dispatch({ type: SET_CART, payload: { data } });
+  };
+
+  useEffect(() => {
+    setCart();
+  }, [state.localCart]);
+
+  useEffect(() => {
+    if (state.total >= state.minFreeShippingAmount) {
+      setFreeShippingFee();
+    } else {
+      getConfigs();
+    }
+  }, [state.total]);
+
+  const getConfigs = async () => {
+    try {
+      const { data } = await myFetch.get(`${config_url}`);
+      dispatch({
+        type: GET_CONFIGS,
+        payload: { configs: data.configs },
+      });
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  useEffect(() => {
+    getConfigs();
+  }, []);
 
   const createOrder = async (values) => {
     setLoading(true);
@@ -107,8 +162,11 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    localStorage.setItem('localCart', JSON.stringify(state.localCart));
+  }, [state.localCart]);
+
+  useEffect(() => {
     dispatch({ type: COUNT_CART_TOTALS });
-    localStorage.setItem('cart', JSON.stringify(state.cart));
   }, [state.cart]);
 
   return (

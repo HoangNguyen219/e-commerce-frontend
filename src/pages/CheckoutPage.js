@@ -4,13 +4,13 @@ import { useCartContext } from '../context/cart_context';
 import { useUserContext } from '../context/user_context';
 import { CartTotal, Alert } from '../components';
 
-import { PageHero, AddressRadio, AddButton } from '../components';
+import { PageHero, AddressRadio, AddButton, Loading } from '../components';
 import { formatPrice } from '../utils/helpers';
 import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
-  const { cart, shipping_fee, createOrder, total } = useCartContext();
+  const { cart, shippingFee, createOrder, total } = useCartContext();
   const { addresses, getAddresses, isLoading, alert, displayAlert } =
     useUserContext();
   const navigate = useNavigate();
@@ -33,7 +33,6 @@ const CheckoutPage = () => {
 
   const [values, setValues] = useState({
     cartItems: cart,
-    shippingFee: shipping_fee,
     paymentMethod: 'cod',
   });
   const handleInput = (e) => {
@@ -106,7 +105,7 @@ const CheckoutPage = () => {
                     );
                   })}
                 </div>
-                <CartTotal total={total} shipping_fee={shipping_fee} />
+                <CartTotal total={total} shippingFee={shippingFee} />
               </div>
               <div className="checkout-payment">
                 <h2>Payment Methods</h2>
@@ -144,6 +143,7 @@ const CheckoutPage = () => {
                   alertType={alert.alertType}
                 />
               )}
+              {isLoading && <Loading />}
               <div className="checkout-btn">
                 <button type="submit" className="btn" disabled={isLoading}>
                   Place Order

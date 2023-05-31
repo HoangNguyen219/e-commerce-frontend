@@ -89,6 +89,7 @@ const cart_reducer = (state, action) => {
 
   if (action.type === SET_CART) {
     const { data } = action.payload;
+    console.log(data);
     return { ...state, cart: data ? [...data] : [] };
   }
 

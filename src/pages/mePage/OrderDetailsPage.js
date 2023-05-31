@@ -21,7 +21,9 @@ const OrderDetailsPage = () => {
     getSingleOrder(id);
   }, [id]);
   return (
-    <Wrapper className="">
+    <Wrapper>
+      <p>Order ID: {id}</p>
+
       <CartColumns />
       {orderItems &&
         orderItems.map((item) => {

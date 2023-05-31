@@ -69,12 +69,12 @@ export const ProductsProvider = ({ children }) => {
           myFetch.get(categories_url),
           myFetch.get(companies_url),
         ]);
-      const { products } = productsResponse.data;
+      const { products, maxPrice } = productsResponse.data;
       const { categories } = categoriesResponse.data;
       const { companies } = companiesResponse.data;
       dispatch({
         type: GET_DATA_SUCCESS,
-        payload: { products, categories, companies },
+        payload: { products, categories, companies, maxPrice },
       });
       setError(false);
     } catch (error) {

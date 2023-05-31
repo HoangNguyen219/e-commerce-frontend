@@ -11,13 +11,14 @@ import {
   Stars,
   PageHero,
   Review,
+  FormReview,
 } from '../components';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const SingleProductPage = () => {
   const { id } = useParams();
   const { product, fetchSingleProduct } = useProductsContext();
-  const { isLoading, isError } = useUserContext();
+  const { isLoading, isError, user: userLogin } = useUserContext();
 
   useEffect(() => {
     fetchSingleProduct(id);
@@ -45,6 +46,13 @@ const SingleProductPage = () => {
         return prev + cur.stock;
       }, 0)
     : 0;
+  let isReviewed = false;
+  if (userLogin) {
+    isReviewed = reviews.find((review) => {
+      return review.userId.id === userLogin.id;
+    });
+  }
+  const isDisplayForm = userLogin && !isReviewed;
   return (
     <Wrapper>
       <PageHero title={name} product />
@@ -88,7 +96,7 @@ const SingleProductPage = () => {
               </section>
             </div>
             <hr className="section-center hr" />
-
+            {isDisplayForm && <FormReview />}
             {reviews && reviews.length > 0 && <Review reviews={reviews} />}
           </>
         )}

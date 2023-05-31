@@ -16,14 +16,6 @@ const Review = ({ reviews }) => {
     deleteFn,
   } = useUserContext();
   const { deleteReview } = useProductsContext();
-  let isReviewed = false;
-  if (userLogin) {
-    isReviewed = reviews.find((review) => {
-      return review.userId.id === userLogin.id;
-    });
-  }
-
-  const isDisplayForm = userLogin && !isReviewed;
 
   return (
     <Wrapper>
@@ -38,8 +30,6 @@ const Review = ({ reviews }) => {
       )}
       <div className="section-center">
         <h3>Product rating</h3>
-
-        {isDisplayForm && <FormReview />}
 
         {reviews.map((review) => {
           const { userId: user, createdAt, comment, rating, id } = review;

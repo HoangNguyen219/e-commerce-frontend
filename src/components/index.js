@@ -30,6 +30,7 @@ import TopBar from './TopBar';
 import ListView from './ListView';
 import GridView from './GridView';
 import PageBtnContainer from './PageBtnContainer';
+import FormReview from './FormReview';
 
 export {
   Navbar,
@@ -64,4 +65,5 @@ export {
   TopBar,
   GridView,
   PageBtnContainer,
+  FormReview,
 };

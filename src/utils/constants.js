@@ -103,4 +103,5 @@ export const orders_url = 'orders';
 export const users_url = 'users';
 export const config_url = 'config';
 
-export const baseUrl = '/api/v1';
+// export const baseUrl = '/api/v1';
+export const baseUrl = 'https://e-commerce-backend-h0w1.onrender.com/api/v1';

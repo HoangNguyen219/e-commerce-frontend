@@ -89,7 +89,7 @@ const SingleProductPage = () => {
             </div>
             <hr className="section-center hr" />
 
-            {reviews && <Review reviews={reviews} />}
+            {reviews && reviews.length > 0 && <Review reviews={reviews} />}
           </>
         )}
       </div>

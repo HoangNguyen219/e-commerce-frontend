@@ -4,6 +4,7 @@ import { baseUrl } from './constants';
 const authFetch = (logoutUser) => {
   const instance = axios.create({
     baseURL: baseUrl,
+    withCredentials: true,
   });
 
   instance.interceptors.response.use(

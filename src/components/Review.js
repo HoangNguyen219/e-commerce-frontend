@@ -99,11 +99,6 @@ const Wrapper = styled.div`
   .rating {
     margin-bottom: 1rem;
   }
-  .form {
-    width: 100%;
-    max-width: 100%;
-    margin: 2rem 0;
-  }
 `;
 
 export default Review;

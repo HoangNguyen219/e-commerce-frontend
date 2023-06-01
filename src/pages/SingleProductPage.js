@@ -47,7 +47,7 @@ const SingleProductPage = () => {
       }, 0)
     : 0;
   let isReviewed = false;
-  if (userLogin) {
+  if (userLogin && reviews) {
     isReviewed = reviews.find((review) => {
       return review.userId.id === userLogin.id;
     });
@@ -106,6 +106,11 @@ const SingleProductPage = () => {
 };
 
 const Wrapper = styled.main`
+  .form {
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+  }
   .hr {
     margin: 3rem auto;
   }

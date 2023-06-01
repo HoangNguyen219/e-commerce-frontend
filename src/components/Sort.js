@@ -45,7 +45,11 @@ const Sort = () => {
           }
         >
           {sorts.map((sort) => {
-            return <option value={sort.id}>{sort.name}</option>;
+            return (
+              <option key={sort.id} value={sort.id}>
+                {sort.name}
+              </option>
+            );
           })}
         </select>
       </form>

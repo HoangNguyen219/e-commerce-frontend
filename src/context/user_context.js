@@ -6,6 +6,7 @@ import {
   DISPLAY_ALERT,
   GET_ADDRESSES,
   GET_ME,
+  GET_USER,
   HANDLE_CLOSE_MODAL,
   HANDLE_SHOW_MODAL,
   LOGIN_USER_SUCCESS,
@@ -122,7 +123,6 @@ export const UserProvider = ({ children }) => {
   const handleError = (error) => {
     let msg = 'Some thing went wrong, please try again';
     if (error.response) {
-      if (error.response.status === 401) return;
       msg = error.response.data.msg;
     }
     displayAlert({
@@ -337,6 +337,7 @@ export const UserProvider = ({ children }) => {
         verifyToken,
         forgotPassword,
         resetPassword,
+        getCurrentUser,
       }}
     >
       {children}

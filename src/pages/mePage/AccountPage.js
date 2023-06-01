@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { useUserContext } from '../../context/user_context';
 import { Link } from 'react-router-dom';
 const AccountPage = () => {
-  const { user } = useUserContext();
+  const { user, getCurrentUser } = useUserContext();
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
   const { name, email } = user;
   return (
     <Wrapper>

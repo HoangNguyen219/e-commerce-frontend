@@ -8,6 +8,7 @@ import { PageHero, AddressRadio, AddButton, Loading } from '../components';
 import { formatPrice } from '../utils/helpers';
 import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 
 const CheckoutPage = () => {
   const { cart, shippingFee, createOrder, total } = useCartContext();
@@ -44,6 +45,10 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    placeOrder();
+  };
+
+  const placeOrder = () => {
     const { cartItems, addressId } = values;
     if (cartItems.length === 0) {
       displayAlert({
@@ -60,6 +65,34 @@ const CheckoutPage = () => {
       return;
     }
     createOrder(values);
+  };
+
+  useEffect(() => {
+    if (values.cartItems.length === 0) {
+      displayAlert({
+        alertType: ALERT_DANGER,
+        alertText: 'Your cart is empty!',
+      });
+    }
+  }, [values.cartItems, values.paymentMethod]);
+
+  const createOrderPayPal = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: (total + shippingFee) / 100,
+          },
+        },
+      ],
+    });
+  };
+
+  const onApprovePayPal = (data, actions) => {
+    return actions.order.capture().then(function (details) {
+      placeOrder();
+      console.log('Payment completed!', details);
+    });
   };
 
   useEffect(() => {
@@ -119,10 +152,18 @@ const CheckoutPage = () => {
                     onChange={handleInput}
                   />
                   <label htmlFor="payment-2">Cash on Delivery</label>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Distinctio, alias!
-                  </p>
+                  {values.paymentMethod == 'cod' ? (
+                    <p>
+                      We offer the convenient payment method of Cash on Delivery
+                      (COD), allowing you to pay for your purchases in cash at
+                      the time of delivery, ensuring a secure and hassle-free
+                      shopping experience without the need for online payments
+                      or sharing sensitive financial information.
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
+
                   <input
                     type="radio"
                     value="paypal"
@@ -130,11 +171,23 @@ const CheckoutPage = () => {
                     name="paymentMethod"
                     onChange={handleInput}
                   />
-                  <label htmlFor="payment-1">Paypal</label>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Tenetur dolor maiores, veniam commodi cum ipsam.
-                  </p>
+                  <label htmlFor="payment-1">PayPal</label>
+                  {values.paymentMethod == 'paypal' && (
+                    <>
+                      <p>
+                        We offer the flexibility and convenience of PayPal,
+                        allowing you to securely make online payments with ease,
+                        ensuring a smooth shopping experience.
+                      </p>
+                      {total > 0 && (
+                        <PayPalButtons
+                          style={{ layout: 'horizontal' }}
+                          createOrder={createOrderPayPal}
+                          onApprove={onApprovePayPal}
+                        />
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
               {alert.showAlert && (
@@ -144,11 +197,13 @@ const CheckoutPage = () => {
                 />
               )}
               {isLoading && <Loading />}
-              <div className="checkout-btn">
-                <button type="submit" className="btn" disabled={isLoading}>
-                  Place Order
-                </button>
-              </div>
+              {values.paymentMethod == 'cod' && (
+                <div className="checkout-btn">
+                  <button type="submit" className="btn" disabled={isLoading}>
+                    Place Order
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </form>
